@@ -1,0 +1,37 @@
+import { create } from "domain";
+
+export const QueryKeys = {
+        login: ["login"],
+        register: ["register"],
+        user: ["user"],
+    products: {
+        All: ["All_products"],
+        colors: ["colors"],
+        createColor: ["color-create"],
+        createProduct: ["create-product"],
+        categories: ["categories"],
+        createCategory: ["category-create"],
+        imageUrl: ["imageUrl"],
+        createImageUrl: ["imageUrl-create"],
+        price: ["price"],
+        createPrice: ["price-create"],
+        star: ["star"],
+        createStar: ["star-create"],
+        description: ["description"],
+        createDescription: ["description-create"],
+        name: ["name"],
+        createName: ["name-create"],
+    },
+    blogs: {
+        All: ["All_blogs"],
+        createBlog: ["create-blog"],
+        categories: ["categories"],
+        createCategory: ["category-create"],
+        imageUrl: ["imageUrl"],
+        createImageUrl: ["imageUrl-create"],
+        description: ["description"],
+        createDescription: ["description-create"],
+        name: ["name"],
+        createName: ["name-create"],
+    },
+}
