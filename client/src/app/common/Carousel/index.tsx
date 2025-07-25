@@ -12,12 +12,14 @@ import { QueryKeys } from "@/app/constant/QueryKeys";
 import { getAPi } from "@/app/http/api";
 import { useQuery } from "@tanstack/react-query";
 import Card from "@/app/(main)/cart";
+import { useCart } from "@/app/Providers/CardProviders";
 
 export const CarouselSize = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: QueryKeys.products.All,
     queryFn: async () => await getAPi("/products"),
   });
+  const {addToCart} = useCart()
   return (
     <Carousel
       opts={{
@@ -36,6 +38,7 @@ export const CarouselSize = () => {
               >
                 <div>
                      <Card
+                     addToCart={() => addToCart(item)}
                      id={item._id}
                 item={item._id} 
                 idx={idx} 
@@ -44,6 +47,7 @@ export const CarouselSize = () => {
                 price={item?.price ?? ""}
                 categories={item?.categories?.name ?? ""}
                 imageUrl={item?.imageUrl}
+                
                 />
                 </div>
               </CarouselItem>

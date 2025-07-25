@@ -4,6 +4,7 @@ import "../globals.css";
 import { QueryProviders } from "../Providers/QueryProviders";
 // import { CardProvider } from "../Providers/CardProviders";
 import MainLayout from "../features/Layout/MainLayout";
+import { CardProvider } from "../Providers/CardProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,12 +32,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProviders>
-          {/* <CardProvider> */}
+          <CardProvider>
             <MainLayout>
                           {children}
 
             </MainLayout>
-          {/* </CardProvider> */}
+          </CardProvider>
         </QueryProviders>
         
       </body>

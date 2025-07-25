@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -5,12 +6,21 @@ import { FaRegHeart, FaRegUser } from "react-icons/fa6";
 import { TbRefresh } from "react-icons/tb";
 import { PiBasket } from "react-icons/pi";
 
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
+import { get } from "http";
+import { useCart } from "@/app/Providers/CardProviders";
 
 const Header = () => {
+  const {
+    getCartItems
+  }=useCart();
+
+  const user = 
+  typeof window !== "undefined"
+  ?JSON.parse(localStorage.getItem("user") || "null"):null
   return (
-   <div className="h-[75px] sticky backdrop-blur-xs backdrop-grayscale ... top-0 flex items-center justify-center z-10 bg-white/50 shadow-md">
+    <div className="h-[75px] sticky backdrop-blur-xs backdrop-grayscale ... top-0 flex items-center justify-center z-10 bg-white/50 shadow-md">
       <div className="container-fluid  flex justify-between items-center">
         <div className="flex items-center">
           <Image
@@ -42,27 +52,35 @@ const Header = () => {
           <Link href="/contacts" className="m-0 py-[7px] px-[5px]">
             Contacts
           </Link>
-          
         </div>
         <div className="2xl:flex hidden">
-          <Link href="/search" className="ml-[10px] text-[10px] w-[222px] items-start  flex content-start py-[7px] px-[5px]">
-            <Search size={19}/>
+          <Link
+            href="/search"
+            className="ml-[10px] text-[10px] w-[222px] items-start  flex content-start py-[7px] px-[5px]"
+          >
+            <Search size={19} />
           </Link>
         </div>
         <div className="hidden sm:flex text-[23px] items-center  gap-[16px]">
-          <TbRefresh size={19}/>
-          <FaRegHeart size={19}/>
+          <TbRefresh size={19} />
+          <FaRegHeart size={19} />
           <div className="flex items-center gap-1.5">
-             <FaRegUser size={19} /> 
-             <h1 className="text-[15px] w-[48px]">Sing In</h1>
-             
+            <FaRegUser size={19} />
+            <h1 className="text-[15px] w-[48px]">Sing In</h1>
           </div>
-                      <Button className="bg-[#2a74ed] rounded-full h-[40px] text-white"><PiBasket />Cart $0.00</Button>
+          <Button variant="outline" className="bg-[#2a74ed] rounded-full h-[40px] text-white">
+            {getCartItems().length > 0 ? (
+              <Link href="/cart">card ({getCartItems().length})</Link>
 
+            ) : (
+              <Link href="/cart">card</Link>
+            )}
+            <PiBasket />
+            Cart $0.00
+          </Button>
         </div>
       </div>
     </div>
-
   );
 };
 

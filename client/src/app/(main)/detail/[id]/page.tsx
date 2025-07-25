@@ -1,15 +1,17 @@
 "use client";
 import { getAPi } from "@/app/http/api";
+import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
+import { ShoppingBag } from "lucide-react";
 import { useParams } from "next/navigation";
 import React from "react";
 
-type Params = {
-    params: {
-        id: string
-    }
-}
-const DetailSection = () => {
+// type Params = {
+//     params: {
+//         id: string
+//     }
+// }
+const DetailSection = ({addToCart}:{addToCart:()=>void}) => {
     const params = useParams();
     const {data}=useQuery({
         queryKey:["product",params.id],
@@ -54,6 +56,10 @@ const DetailSection = () => {
 <h1 className='text-[16px] '>Made by Product Hub</h1>
 <h1 className='text-[18px] text-[#a1a1a1]'>${data?.price} value</h1>
 <p>{data?.description}</p>
+<Button onClick={() => addToCart()} variant="outline">
+                    <ShoppingBag />
+                    Add to Cart
+                  </Button>
     </div>
   <div className='my-[32px]'>
     <div className='flex flex-col gap-[16px]'>
