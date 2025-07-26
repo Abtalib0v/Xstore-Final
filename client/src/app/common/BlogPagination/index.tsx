@@ -19,7 +19,7 @@ export default function BlogPagination() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: QueryKeys.products.All,
+    queryKey: QueryKeys.blogs.All,
     queryFn: async () => await getAPi("/blogs"),
   });
 

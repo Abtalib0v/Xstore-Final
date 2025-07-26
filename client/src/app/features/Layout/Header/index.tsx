@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { FaRegHeart, FaRegUser } from "react-icons/fa6";
 import { TbRefresh } from "react-icons/tb";
 import { PiBasket } from "react-icons/pi";
@@ -10,8 +10,20 @@ import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { get } from "http";
 import { useCart } from "@/app/Providers/CardProviders";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import DrawerSection from "@/app/(main)/Drawer";
 
 const Header = () => {
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const {
     getCartItems
   }=useCart();
@@ -20,7 +32,7 @@ const Header = () => {
   typeof window !== "undefined"
   ?JSON.parse(localStorage.getItem("user") || "null"):null
   return (
-    <div className="h-[75px] sticky backdrop-blur-xs backdrop-grayscale ... top-0 flex items-center justify-center z-10 bg-white/50 shadow-md">
+    <div className=" h-[75px] sticky backdrop-blur-xs backdrop-grayscale ... top-0 flex items-center justify-center z-10 bg-white/50 shadow-md">
       <div className="container-fluid  flex justify-between items-center">
         <div className="flex items-center">
           <Image
@@ -68,19 +80,45 @@ const Header = () => {
             <FaRegUser size={19} />
             <h1 className="text-[15px] w-[48px]">Sing In</h1>
           </div>
-          <Button variant="outline" className="bg-[#2a74ed] rounded-full h-[40px] text-white">
-            {getCartItems().length > 0 ? (
-              <Link href="/cart">card ({getCartItems().length})</Link>
+          <Button onClick={()=>setOpenDrawer(true)} variant="outline" className="bg-[#2a74ed] rounded-full h-[40px] text-white">
+            
+              
+                {getCartItems().length > 0 ? (
+              <div className="flex gap-1.5"><PiBasket />
+            Cart ({getCartItems().length})</div>
 
             ) : (
-              <Link href="/cart">card</Link>
+              <div className="flex gap-1.5"><PiBasket />
+            Cart</div>
             )}
-            <PiBasket />
-            Cart $0.00
+             
           </Button>
+          {
+              openDrawer && <DrawerSection open={openDrawer} setOpen={setOpenDrawer} >
+                
+              </DrawerSection>
+            }
         </div>
       </div>
+      <div className=" ">
+{/* <Drawer direction="right">
+  <DrawerTrigger>Open</DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+      <DrawerDescription>This action cannot be undone.</DrawerDescription>
+    </DrawerHeader>
+    <DrawerFooter>
+      <Button>Submit</Button>
+      <DrawerClose>
+        <Button variant="outline">Cancel</Button>
+      </DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer> */}
+      </div>
     </div>
+
   );
 };
 

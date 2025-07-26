@@ -4,12 +4,13 @@ import { createContext, useContext, useEffect, useState } from "react";
 const CartContext = createContext<any>(null);
 export const CardProvider = ({children}: {children: React.ReactNode}) => {
     const [cart, setCart] = useState<any[]>(() => {
-    if (typeof window === "undefined") {
-        const savedCard = localStorage.getItem("cart");
-        return savedCard ? JSON.parse(savedCard) : [];
-    }
-    return [];
+  if (typeof window !== "undefined") {
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  }
+  return [];
 });
+
 
 useEffect(() => {
 
@@ -18,20 +19,26 @@ useEffect(() => {
     }
 }, [cart]);
 
-const addToCart = (item:any)=>{
-    setCart((prevCart) =>{
-        const existingItem = prevCart.find((cardItem)=> cardItem.id === item._id);
-        if (existingItem) {
-            return prevCart.map((cardItem) =>
-                cardItem.id === item._id
-                    ? { ...cardItem, quantity: cardItem.quantity + 1 }
-                    : cardItem
-            );
-        } 
-        return [...prevCart, { ...item,id:item._id, quantity: 1 }];
-    })
+const addToCart = (item: any) => {
+  setCart((prevCart) => {
+    const existingItem = prevCart.find(
+      (cartItem) => cartItem.id === item._id
+    );
 
+    if (existingItem) {
+      return prevCart.map((cartItem) =>
+        cartItem.id === item._id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem
+      );
+    }
+
+    // item._id varsa onu id olarak ata
+    return [...prevCart, { ...item, id: item._id, quantity: 1 }];
+  });
 };
+
+
 const removeFromCart = (itemId: string) => {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.id !== itemId));
 };
