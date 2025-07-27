@@ -10,23 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { get } from "http";
 import { useCart } from "@/app/Providers/CardProviders";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
 import DrawerSection from "@/app/(main)/Drawer";
 
 const Header = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const {
-    getCartItems
+    getCartItems,
+    getTotalPrice,
   }=useCart();
+  const total = getTotalPrice().toFixed(2)
 
   const user = 
   typeof window !== "undefined"
@@ -34,17 +26,17 @@ const Header = () => {
   return (
     <div className=" h-[75px] sticky backdrop-blur-xs backdrop-grayscale ... top-0 flex items-center justify-center z-10 bg-white/50 shadow-md">
       <div className="container-fluid  flex justify-between items-center">
-        <div className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             width={117}
             height={0}
             alt="XStore Logo"
-            className="2xl:mr-[270px] md:mr-[100px] sm:mr-0"
+            className="2xl:mr-[270px]  md:mr-[100px] sm:mr-0"
             src={
               "https://xstore.8theme.com/elementor/demos/minimal-electronics/wp-content/uploads/sites/71/2022/02/Logo@2x.png"
             }
           />
-        </div>
+        </Link>
         <div className="hidden 2xl:flex justify-end  items-center space-x-4 text-[16px] content-end w-[708px] leading-[25.6px] gap-[16px] font-medium">
           <Link href="/elements" className=" m-0 py-[7px] px-[5px]">
             Elements
@@ -85,7 +77,7 @@ const Header = () => {
               
                 {getCartItems().length > 0 ? (
               <div className="flex gap-1.5"><PiBasket />
-            Cart ({getCartItems().length})</div>
+            Cart ({getCartItems().length}) - ${total}</div>
 
             ) : (
               <div className="flex gap-1.5"><PiBasket />
@@ -101,21 +93,6 @@ const Header = () => {
         </div>
       </div>
       <div className=" ">
-{/* <Drawer direction="right">
-  <DrawerTrigger>Open</DrawerTrigger>
-  <DrawerContent>
-    <DrawerHeader>
-      <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-      <DrawerDescription>This action cannot be undone.</DrawerDescription>
-    </DrawerHeader>
-    <DrawerFooter>
-      <Button>Submit</Button>
-      <DrawerClose>
-        <Button variant="outline">Cancel</Button>
-      </DrawerClose>
-    </DrawerFooter>
-  </DrawerContent>
-</Drawer> */}
       </div>
     </div>
 

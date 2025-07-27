@@ -39,9 +39,24 @@ const addToCart = (item: any) => {
 };
 
 
-const removeFromCart = (itemId: string) => {
-    setCart((prevCart) => prevCart.filter((cartItem) => cartItem.id !== itemId));
+const removeFromCart = (id: string) => {
+  setCart((prevCart) => {
+    const existingItem = prevCart.find((item) => item.id === id);
+
+    if (!existingItem) return prevCart;
+
+    // Əgər say 1-dən böyükdürsə, quantity-ni azaldır
+    if (existingItem.quantity > 1) {
+      return prevCart.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      );
+    }
+
+    // Əks halda tam silir
+    return prevCart.filter((item) => item.id !== id);
+  });
 };
+
 const clearCart = () => {
     setCart([]);
 };

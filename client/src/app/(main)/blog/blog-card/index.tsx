@@ -21,7 +21,7 @@ type Props = {
                   <div className="px-[15px] flex flex-col z-20  bg-white">
                     <div className="flex flex-col rounded-[20px]  object-cover overflow-hidden">
                       <img
-                        className="hover:scale-105  h-[313px]  duration-300   flex object-cover"
+                        className="hover:scale-105   h-[313px]  duration-300   flex object-cover"
                         src={imageUrl}
                         alt=""
                       />

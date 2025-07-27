@@ -59,7 +59,6 @@ const BlogDetailSection = () => {
         <div className="grid col-span-3">
 
 <div>
-{}
 </div>
         </div>
         

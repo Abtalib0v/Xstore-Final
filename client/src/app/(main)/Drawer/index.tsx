@@ -39,8 +39,9 @@ export default function DrawerSection({
                   className="w-[80px] h-[80px] object-cover rounded-md"
                 />
                 <div>
-                  <div className="font-semibold">{item.name}</div>
-                  <div className="text-gray-600">{item.price}</div>
+                  <div className="font-semibold text-[13px]">{item.name}</div>
+                  <div className="text-gray-600 text-[13px]">${item.price}</div>
+                  <p>{item.quantity}</p>
                   <Button
             variant="destructive"
             size="icon"

@@ -3,6 +3,10 @@ import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import DrawerSection from "../Drawer";
+import AddToCartButton from "@/components/ui/addToCartButton";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getAPi } from "@/app/http/api";
 
 const Card = ({
   item,
@@ -20,22 +24,27 @@ const Card = ({
   idx: number;
   name: string;
   star: string;
-  price: string;
+  price: number;
   categories: string;
   imageUrl: string;
   addToCart: () => void;
 }) => {
-  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-  const [selectProduct, setSelectProduct] = useState<any>(null);
+  const params = useParams();
+    const {data}=useQuery({
+        queryKey:["product",params.id],
+        queryFn:()=>getAPi(`/products/${params.id}`)
+    })
+  // const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  // const [selectProduct, setSelectProduct] = useState<any>(null);
 
-  const handleAddCard = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
+  // const handleAddCard = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   e.preventDefault();
 
-    addToCart();
-    setSelectProduct({ id, name, price, imageUrl });
-    setOpenDrawer(true); // drawerı aç
-  };
+  //   addToCart();
+  //   setSelectProduct({ id, name, price, imageUrl });
+  //   setOpenDrawer(true); // drawerı aç
+  // };
 
   return (
     <div>
@@ -55,46 +64,18 @@ const Card = ({
                   <div className="font-medium">{name}</div>
                   <div>{star}</div>
                   <div>{price}</div>
-                  <Button onClick={handleAddCard} variant="outline">
-                    <ShoppingBag />
-                    Add to Cart
-                  </Button>
+                  
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </Link>
-
-      {/* Drawer gösterme */}
-      {openDrawer && selectProduct && (
-        <DrawerSection
-          open={openDrawer}
-          setOpen={setOpenDrawer}
-          product={selectProduct}
-        >
-          <div className="p-[20px]">
-            <h1 className="text-[16px] text-[#121212] font-medium">
-              Item added to your cart
-            </h1>
-            <div className="flex gap-[30px] px-[20px]">
-              <div>
-                <img
-                  className="w-[120px]"
-                  src={selectProduct.imageUrl}
-                  alt=""
-                />
-              </div>
-              <div className="flex flex-col gap-[10px]">
-                <div className="font-bold text-[#121212bf] text-[16px]">
-                  {selectProduct.name}
-                </div>
-                <div>${selectProduct.price}</div>
-              </div>
-            </div>
-          </div>
-        </DrawerSection>
-      )}
+      </Link><AddToCartButton
+  id={id}
+  name={name}
+  price={price}
+  imageUrl={imageUrl}
+/>
     </div>
   );
 };

@@ -35,14 +35,14 @@ export default function BlogPagination() {
 
   return (
     <>
-      <div className="container-fluid px-[150px] w-full  ">
+      <div className="container-fluid 2xl:px-[150px] px-0 w-full flex justify-center  ">
         <div className="grid grid-cols-12">
 
         
         {paginatedProducts.map((item: any, idx: number) => (
           <div
             key={idx}
-            className="grid col-span-4   mr-[10px] pl-0 w-full"
+            className="grid 2xl:col-span-4 col-span-12  mr-[10px] pl-0 w-full"
           >
             <BlogCard
               id={item._id}
