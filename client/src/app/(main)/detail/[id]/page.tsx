@@ -53,9 +53,7 @@ const DetailSection = ({
         <div className=' border-[1px] border-[#ddd] rounded-[16px] overflow-hidden'>
 <img className='rounded-[8px] w-full' src={data?.imageUrl} alt='' />
 
-</div><div className='flex gap-[10px]'>
-        <img className='w-[24px]' src={data?.imageUrl} alt='' />
-    </div>
+</div>
       </div>
 
 

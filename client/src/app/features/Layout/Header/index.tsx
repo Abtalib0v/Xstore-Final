@@ -1,19 +1,22 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegHeart, FaRegUser } from "react-icons/fa6";
 import { TbRefresh } from "react-icons/tb";
 import { PiBasket } from "react-icons/pi";
-
+import styles from "./style.module.scss";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { get } from "http";
 import { useCart } from "@/app/Providers/CardProviders";
 import DrawerSection from "@/app/(main)/Drawer";
+import clsx from "clsx";
 
 const Header = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
   const {
     getCartItems,
     getTotalPrice,
@@ -23,8 +26,20 @@ const Header = () => {
   const user = 
   typeof window !== "undefined"
   ?JSON.parse(localStorage.getItem("user") || "null"):null
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
-    <div className=" h-[75px] sticky backdrop-blur-xs backdrop-grayscale ... top-0 flex items-center justify-center z-10 bg-white/50 shadow-md">
+    <div className={clsx(
+        styles.Header,
+        { [styles.scrolled]: isScrolled },
+        "h-[75px] sticky backdrop-blur-xs backdrop-grayscale ... top-0 flex items-center justify-center z-10 bg-white/50"
+      )}>
       <div className="container-fluid  flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <Image
@@ -72,16 +87,16 @@ const Header = () => {
             <FaRegUser size={19} />
             <h1 className="text-[15px] w-[48px]">Sing In</h1>
           </div>
-          <Button onClick={()=>setOpenDrawer(true)} variant="outline" className="bg-[#2a74ed] rounded-full h-[40px] text-white">
+          <Button onClick={()=>setOpenDrawer(true)} variant="outline" className="bg-[#2a74ed] rounded-full border-transparent h-[40px] text-white cursor-pointer">
             
               
                 {getCartItems().length > 0 ? (
-              <div className="flex gap-1.5"><PiBasket />
-            Cart ({getCartItems().length}) - ${total}</div>
+              <div className="flex items-center gap-1.5"><PiBasket />
+            Cart  - ${total}</div>
 
             ) : (
-              <div className="flex gap-1.5"><PiBasket />
-            Cart</div>
+              <div className="flex items-center gap-1.5"><PiBasket />
+            Cart $0.00</div>
             )}
              
           </Button>

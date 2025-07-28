@@ -37,6 +37,10 @@ const addToCart = (item: any) => {
     return [...prevCart, { ...item, id: item._id, quantity: 1 }];
   });
 };
+const truncateText = (text: string, maxLength = 40) => {
+  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+};
+
 
 
 const removeFromCart = (id: string) => {
@@ -91,6 +95,7 @@ const getTotalItems = () => {
         getTotalPrice,
         getCartItems,
         getCartSummary,
+        truncateText,
       }}
     >
       {children}

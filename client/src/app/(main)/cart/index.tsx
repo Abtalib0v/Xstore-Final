@@ -7,6 +7,7 @@ import AddToCartButton from "@/components/ui/addToCartButton";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getAPi } from "@/app/http/api";
+import { useCart } from "@/app/Providers/CardProviders";
 
 const Card = ({
   item,
@@ -34,6 +35,8 @@ const Card = ({
         queryKey:["product",params.id],
         queryFn:()=>getAPi(`/products/${params.id}`)
     })
+     const { truncateText} = useCart();
+    
   // const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   // const [selectProduct, setSelectProduct] = useState<any>(null);
 
@@ -61,7 +64,7 @@ const Card = ({
                       alt=""
                     />
                   </div>
-                  <div className="font-medium">{name}</div>
+                  <div className="font-medium">{truncateText(name)}</div>
                   <div>{star}</div>
                   <div>{price}</div>
                   

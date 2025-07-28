@@ -18,7 +18,7 @@ export default function DrawerSection({
   children,
 }: DrawerSectionProps) {
 
- const { getCartItems, removeFromCart } = useCart();
+ const { getCartItems, removeFromCart,truncateText } = useCart();
   const cartItems = getCartItems();
   return (
     <div className="flex z-10">
@@ -39,9 +39,12 @@ export default function DrawerSection({
                   className="w-[80px] h-[80px] object-cover rounded-md"
                 />
                 <div>
-                  <div className="font-semibold text-[13px]">{item.name}</div>
-                  <div className="text-gray-600 text-[13px]">${item.price}</div>
-                  <p>{item.quantity}</p>
+                  <div className="font-semibold text-[13px]">{truncateText(item.name,30)}</div>
+                  <div className="flex gap-1.5 py-2 items-center text-gray-600 text-[13px]">
+                    <p>{item.quantity}</p> ×
+                    <div>${item.price}</div>
+                  </div>
+                  
                   <Button
             variant="destructive"
             size="icon"
