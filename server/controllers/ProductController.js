@@ -6,19 +6,40 @@ const ProductColorSchema = require("../Models/Product/ProductColorSchema");
 // const OrderSchema = require("../models/Order/OrderSchema");
 
 const getAllProducts = async (req, res) => {
-  const products = await ProductSchema.find()
-    .populate("categories")
-    // .populate("star")
-    .populate("colors");
-  if (!products || products.length === 0) {
-    return res.status(404).json({
-      message: "No products found",
+  try {
+    const { color } = req.query;  // query'den renk adı al
+
+    let filter = {};
+
+    if (color) {
+      // Renk adıyla, ilgili renk objesini bul
+      const colorDoc = await ProductColorSchema.findOne({ name: color });
+      if (colorDoc) {
+        // Bulduysan renk id'sini filtreye ekle
+        filter["colors"] = colorDoc._id;
+      } else {
+        // Renk yoksa, hiç ürün dönmesin diye boş sonuç döndürecek filtre koy
+        filter["colors"] = null;
+      }
+    }
+
+    const products = await ProductSchema.find(filter)
+      .populate("categories")
+      .populate("colors");
+
+    if (!products || products.length === 0) {
+      return res.status(404).json({
+        message: "No products found",
+      });
+    }
+    return res.status(200).json({
+      data: products,
     });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error: error.message });
   }
-  return res.status(200).json({
-    data: products,
-  });
 };
+
 
 const getAllColors = async (req, res) => {
   const colors = await ProductColorSchema.find();
