@@ -7,61 +7,60 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { PiMinusThin } from "react-icons/pi";
 import { useState } from "react";
-import clsx from "clsx"
+import clsx from "clsx";
 import { getAPi } from "@/app/http/api";
 import Card from "../cart";
 import AddToCartButton from "@/components/ui/addToCartButton";
+import { Star } from "lucide-react";
 
 const ShopDetailUp = () => {
   const [selectCardCategory, setSelectCardCategory] = useState("");
-  const [selectCardAvailability, setSelectCardAvailability] = useState("");
-  const [selectCardMaterial, setSelectCardMaterial] = useState("");
-const [selectCardColor,setSelectCardColor] = useState("")
+
+  const [selectCardColor, setSelectCardColor] = useState("");
+  const [selectCardStar, setSelectCardStar] = useState(""); // YENİ: star filtresi
+
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
   const { data: products } = useQuery({
     queryKey: [
       "Product",
       selectCardCategory,
-      selectCardAvailability,
-      selectCardMaterial,
+      selectCardStar,
       selectCardColor,
+      minPrice,
+      maxPrice,
     ],
     queryFn: () =>
-       getAPi(
-    `products?populate=*` +
-    (selectCardCategory ? `&filters[categories][name][$eq]=${selectCardCategory}` : "") +
-    (selectCardAvailability ? `&filters[availabilities][name][$eq]=${selectCardAvailability}` : "") +
-    (selectCardMaterial ? `&filters[materials][name][$eq]=${selectCardMaterial}` : "") +
-    (selectCardColor ? `&filters[colors][name][$eq]=${selectCardColor}` : "")
-  ),
+      getAPi("products", {
+    ...(selectCardCategory.length > 0 && { category: selectCardCategory }),
+        
+        ...(selectCardStar && { star: selectCardStar }), // YENİ
+
+        ...(selectCardColor && { color: selectCardColor }),
+        ...(minPrice && { minPrice }),
+        ...(maxPrice && { maxPrice }),
+      }),
   });
-  const  {data: categories}  = useQuery({
+  const { data: categories } = useQuery({
     queryKey: ["categories"],
-    queryFn: () => getAPi("products/categories?populate=*"),
-  });
-  const { data: cardsAvailabilities } = useQuery({
-    queryKey: ["cardAvailabilities"],
-    queryFn: () => getAPi("availabilities?populate=*"),
-  });
-  const { data: cardsMaterials } = useQuery({
-    queryKey: ["cardMaterials"],
-    queryFn: () => getAPi("materials?populate=*"),
+    queryFn: () => getAPi("products/categories?"),
   });
   const { data: colors } = useQuery({
     queryKey: ["colors"],
-    queryFn: () => getAPi("products/colors?populate=*"),
+    queryFn: () => getAPi("products/colors?"),
   });
-  const SetByColorWithName = (name:any) =>{
-    switch (name){
-        case "Black":
-        return "bg-[#000000]"
-        case "Blue":
-        return "bg-[#1e73be]"
-        case "Red":
-        return "bg-[#dd3333]"
-        case "White":
-        return "bg-[#ffffff]"
+  const SetByColorWithName = (name: any) => {
+    switch (name) {
+      case "Black":
+        return "bg-[#000000]";
+      case "Blue":
+        return "bg-[#1e73be]";
+      case "Red":
+        return "bg-[#dd3333]";
+      case "White":
+        return "bg-[#ffffff]";
     }
-  }
+  };
 
   return (
     <div className="mt-[60px] container mx-auto ">
@@ -174,67 +173,6 @@ const [selectCardColor,setSelectCardColor] = useState("")
             <Accordion
               defaultExpanded
               sx={{
-                fontFamily: "jost",
-                boxShadow: "none",
-                "&::before": {
-                  display: "none",
-                },
-              }}
-            >
-              <AccordionSummary
-                sx={{
-                  minHeight: 48,
-                  paddingY: 0,
-                  "&.Mui-expanded": {
-                    minHeight: 48, // Aynı kalsın
-                  },
-                  "& .MuiAccordionSummary-content": {
-                    marginY: 0,
-                    "&.Mui-expanded": {
-                      marginY: 0,
-                    },
-                  },
-                }}
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1-content"
-                id="panel1-header"
-              >
-                <Typography
-                  sx={{ fontFamily: "jost", fontCategory: "20px" }}
-                  component="span"
-                >
-                  Availability
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {cardsAvailabilities &&
-                  cardsAvailabilities?.data?.map((item: any, index: any) => (
-                    <div
-                      key={index}
-                      className="flex flex-col text-[14px] text-[#121212bf] "
-                    >
-                      <label className="w-full flex justify-between py-[10px]">
-                        <div>
-                          <input
-                            type="checkbox"
-                            className="mr-[10px] border-2 border-[#121212bf]"
-                            onChange={(e) => {
-                              setSelectCardAvailability(
-                                e.target.checked ? item.name : ""
-                              );
-                            }}
-                          />
-                          {item?.name}
-                        </div>
-                        <span>({item.cards.length})</span>
-                      </label>
-                    </div>
-                  ))}
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              defaultExpanded
-              sx={{
                 boxShadow: "none",
                 "&::before": {
                   display: "none",
@@ -263,7 +201,7 @@ const [selectCardColor,setSelectCardColor] = useState("")
                 id="panel2-header"
               >
                 <Typography
-                  sx={{ fontFamily: "jost", fontCategory: "20px" }}
+                  sx={{ fontFamily: "Roboto", fontCategory: "20px" }}
                   component="span"
                 >
                   Price
@@ -278,6 +216,8 @@ const [selectCardColor,setSelectCardColor] = useState("")
                         type="number"
                         placeholder="0"
                         className=" py-2 w-[100px] mr-[10px] outline-0"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(e.target.value)}
                       />
                     </div>
                   </label>
@@ -291,6 +231,8 @@ const [selectCardColor,setSelectCardColor] = useState("")
                         type="number"
                         placeholder="876.00"
                         className="py-2 mr-[10px] w-[100px] outline-0"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(e.target.value)}
                       />
                     </div>
                   </label>
@@ -328,7 +270,7 @@ const [selectCardColor,setSelectCardColor] = useState("")
                 id="panel3-header"
               >
                 <Typography
-                  sx={{ fontFamily: "jost", fontCategory: "20px" }}
+                  sx={{ fontFamily: "Roboto", fontCategory: "20px" }}
                   component="span"
                 >
                   Color
@@ -337,17 +279,27 @@ const [selectCardColor,setSelectCardColor] = useState("")
               <AccordionDetails>
                 {colors &&
                   colors?.data?.map((item: any, index: any) => (
-                <button key={index} className="flex justify-between cursor-pointer w-full text-[14px] text-[#121212bf] items-center py-[10px]"  onClick={() => {
-    setSelectCardColor(prev =>
-      prev === item.name ? "" : item.name
-    );
-  }}>
-                  <div className="flex items-center">
-                    <div key={index} className={clsx('w-[24px] h-[24px] border-[2px] rounded-full  ',SetByColorWithName(item.name))} ></div>
-                    <h1 className="ml-2">{item?.name}</h1>
-                  </div>
-                  {/* <h1>({item.cards.length})</h1> */}
-                </button>
+                    <button
+                      key={item._id ?? index}
+                      className="flex justify-between cursor-pointer w-full text-[14px] text-[#121212bf] items-center py-[10px]"
+                      onClick={() => {
+                        setSelectCardColor((prev) =>
+                          prev === item.name ? "" : item.name
+                        );
+                      }}
+                    >
+                      <div className="flex items-center">
+                        <div
+                          key={item._id ?? index}
+                          className={clsx(
+                            "w-[24px] h-[24px] border-[2px] rounded-full  ",
+                            SetByColorWithName(item.name)
+                          )}
+                        ></div>
+                        <h1 className="ml-2">{item?.name}</h1>
+                      </div>
+                      {/* <h1>({item.cards.length})</h1> */}
+                    </button>
                   ))}
               </AccordionDetails>
             </Accordion>
@@ -355,12 +307,8 @@ const [selectCardColor,setSelectCardColor] = useState("")
               defaultExpanded
               sx={{
                 boxShadow: "none",
-                "&::before": {
-                  display: "none",
-                },
-                "&.Mui-expanded": {
-                  minHeight: "unset",
-                },
+                "&::before": { display: "none" },
+                "&.Mui-expanded": { minHeight: "unset" },
               }}
             >
               <AccordionSummary
@@ -382,36 +330,38 @@ const [selectCardColor,setSelectCardColor] = useState("")
                 id="panel3-header"
               >
                 <Typography
-                  sx={{ fontFamily: "jost", fontCategory: "20px" }}
+                  sx={{ fontFamily: "Roboto", fontCategory: "20px" }}
                   component="span"
                 >
-                  Material
+                  Star
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {cardsMaterials &&
-                  cardsMaterials?.data?.map((item: any, index: any) => (
-                    <div
-                      key={index}
-                      className="flex flex-col text-[14px] text-[#121212bf] "
-                    >
-                      <label className="w-full flex justify-between py-[10px]">
-                        <div>
-                          <input
-                            type="checkbox"
-                            className="mr-[10px] border-2 border-[#121212bf]"
-                            onChange={(e) => {
-                              setSelectCardMaterial(
-                                e.target.checked ? item.name : ""
-                              );
-                            }}
-                          />
-                          {item?.name}
-                        </div>
-                        <span>({item.cards.length})</span>
-                      </label>
-                    </div>
+                <div className="flex flex-col gap-2">
+                  {[5, 4, 3, 2, 1].map((star) => (
+                    <label key={star} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="star"
+                        value={star}
+                        checked={selectCardStar === String(star)}
+                        onChange={() => setSelectCardStar(String(star))}
+                        className="hidden"
+                      />
+                      <span className="flex">
+                        {Array.from({ length: star }).map((_, i) => (
+                          <Star key={i} color="#FFD700" />
+                        ))}
+                      </span>
+                    </label>
                   ))}
+                  <button
+                    className="text-xs text-blue-500 mt-2"
+                    onClick={() => setSelectCardStar("")}
+                  >
+                    Filtreyi Temizle
+                  </button>
+                </div>
               </AccordionDetails>
             </Accordion>
             <Accordion
@@ -445,7 +395,7 @@ const [selectCardColor,setSelectCardColor] = useState("")
                 id="panel3-header"
               >
                 <Typography
-                  sx={{ fontFamily: "jost", fontCategory: "20px" }}
+                  sx={{ fontFamily: "Roboto", fontCategory: "20px" }}
                   component="span"
                 >
                   Category
@@ -455,7 +405,7 @@ const [selectCardColor,setSelectCardColor] = useState("")
                 {categories &&
                   categories?.data?.map((item: any, index: any) => (
                     <div
-                      key={index}
+                      key={item._id ?? index}
                       className="flex flex-col text-[14px] text-[#121212bf] "
                     >
                       <label className="w-full flex justify-between py-[10px]">
@@ -483,19 +433,18 @@ const [selectCardColor,setSelectCardColor] = useState("")
           <div className="grid grid-cols-12 gap-5">
             {products &&
               products?.data?.map((item: any, idx: any) => (
-                <div className="col-span-3">
+                <div className="col-span-3" key={item._id ?? idx}>
                   <Card
-                     addToCart={() => AddToCartButton(item)}
-                     id={item._id}
-                item={item._id} 
-                idx={idx} 
-                name={item?.name ?? ""}
-                star={item?.star ?? ""}
-                price={item?.price ?? ""}
-                categories={item?.categories?.name ?? ""}
-                imageUrl={item?.imageUrl}
-                
-                />
+                    addToCart={() => AddToCartButton(item)}
+                    id={item._id}
+                    item={item._id}
+                    idx={idx}
+                    name={item?.name ?? ""}
+                    star={item?.star ?? ""}
+                    price={item?.price ?? ""}
+                    categories={item?.categories?.name ?? ""}
+                    imageUrl={item?.imageUrl}
+                  />
                 </div>
               ))}
           </div>

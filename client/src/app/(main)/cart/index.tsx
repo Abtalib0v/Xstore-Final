@@ -1,12 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Star } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import DrawerSection from "../Drawer";
 import AddToCartButton from "@/components/ui/addToCartButton";
-import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { getAPi } from "@/app/http/api";
 import { useCart } from "@/app/Providers/CardProviders";
 
 const Card = ({
@@ -30,24 +25,7 @@ const Card = ({
   imageUrl: string;
   addToCart: () => void;
 }) => {
-  const params = useParams();
-    const {data}=useQuery({
-        queryKey:["product",params.id],
-        queryFn:()=>getAPi(`/products/${params.id}`)
-    })
-     const { truncateText} = useCart();
-    
-  // const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-  // const [selectProduct, setSelectProduct] = useState<any>(null);
-
-  // const handleAddCard = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   e.preventDefault();
-
-  //   addToCart();
-  //   setSelectProduct({ id, name, price, imageUrl });
-  //   setOpenDrawer(true); // drawerı aç
-  // };
+  const { truncateText } = useCart();
 
   return (
     <div>
@@ -65,20 +43,22 @@ const Card = ({
                     />
                   </div>
                   <div className="font-medium">{truncateText(name)}</div>
-                  <div>{star}</div>
-                  <div>{price}</div>
-                  
+                  <div className="flex">{Array.from({ length: Number(star) || 0 }).map((_, i) => (
+              <Star key={i} size={14} color="#FFD700" fill="#FFD700" />
+            ))}</div>
+                  <div>${price}</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </Link><AddToCartButton
-  id={id}
-  name={name}
-  price={price}
-  imageUrl={imageUrl}
-/>
+      </Link>
+      <AddToCartButton
+        id={id}
+        name={name}
+        price={price}
+        imageUrl={imageUrl}
+      />
     </div>
   );
 };

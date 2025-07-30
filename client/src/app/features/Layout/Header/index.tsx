@@ -15,7 +15,7 @@ import clsx from "clsx";
 
 const Header = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-    const [isScrolled, setIsScrolled] = useState<boolean>(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
   const {
     getCartItems,
@@ -23,14 +23,12 @@ const Header = () => {
   }=useCart();
   const total = getTotalPrice().toFixed(2)
 
-  const user = 
-  typeof window !== "undefined"
-  ?JSON.parse(localStorage.getItem("user") || "null"):null
+  const [user, setUser] = useState<any>(null);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

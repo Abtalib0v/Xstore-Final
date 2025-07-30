@@ -7,34 +7,50 @@ const ProductColorSchema = require("../Models/Product/ProductColorSchema");
 
 const getAllProducts = async (req, res) => {
   try {
-    const { color } = req.query;  // query'den renk adı al
+    const { color, category, minPrice, maxPrice,star} = req.query;
 
     let filter = {};
 
+    // COLOR filtresi
     if (color) {
-      // Renk adıyla, ilgili renk objesini bul
       const colorDoc = await ProductColorSchema.findOne({ name: color });
       if (colorDoc) {
-        // Bulduysan renk id'sini filtreye ekle
         filter["colors"] = colorDoc._id;
       } else {
-        // Renk yoksa, hiç ürün dönmesin diye boş sonuç döndürecek filtre koy
         filter["colors"] = null;
       }
     }
+    if (star) {
+  filter["star"] = Number(star);
+}
 
+    // CATEGORY filtresi
+    if (category) {
+      const categoryDoc = await ProductCategorySchema.findOne({ name: category });
+      if (categoryDoc) {
+        filter["categories"] = categoryDoc._id;
+      } else {
+        filter["categories"] = null;
+      }
+    }
+
+    // PRICE filtresi
+    if (minPrice || maxPrice) {
+      filter["price"] = {};
+      if (minPrice) filter["price"]["$gte"] = parseFloat(minPrice);
+      if (maxPrice) filter["price"]["$lte"] = parseFloat(maxPrice);
+    }
+
+    // ÜRÜNLERİ GETİR
     const products = await ProductSchema.find(filter)
       .populate("categories")
       .populate("colors");
 
     if (!products || products.length === 0) {
-      return res.status(404).json({
-        message: "No products found",
-      });
+      return res.status(404).json({ message: "No products found" });
     }
-    return res.status(200).json({
-      data: products,
-    });
+
+    return res.status(200).json({ data: products });
   } catch (error) {
     return res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -89,28 +105,38 @@ const getAllCategories = async (req, res) => {
 };
 const getCategoryById = async (req, res) => {
   const id = req.params.id;
+  if (!id || id === "undefined") {
+    return res.status(400).json({ message: "Geçersiz ID" });
+  }
   const category = await ProductCategorySchema.findById(id);
   if (!category) {
     return res.status(404).json({ message: 'Category not found' });
   }
   return res.json(category);
 };
+
 const getProductById = async (req, res) => {
   const id = req.params.id;
+  if (!id || id === "undefined") {
+    return res.status(400).json({ message: "Geçersiz ID product" });
+  }
   const product = await ProductSchema.findById(id);
   if (!product) {
     return res.status(404).json({ message: 'product not found' });
   }
   return res.json(product);
 };
+
 const deleteAPiWithParams = async (req, res) => {
   const id = req.params.id;
-  if (!id) {
-    return res.status(400).json({ message: "ID is required" });
+  if (!id || id === "undefined") {
+    return res.status(400).json({ message: "Geçersiz ID delete" });
   }
   try {
-    const deletedFunction =  (await ProductCategorySchema.findByIdAndDelete(id)) || (await ProductSchema.findByIdAndDelete(id)) ||
-  (await ProductColorSchema.findByIdAndDelete(id));
+    const deletedFunction =
+      (await ProductCategorySchema.findByIdAndDelete(id)) ||
+      (await ProductSchema.findByIdAndDelete(id)) ||
+      (await ProductColorSchema.findByIdAndDelete(id));
     if (!deletedFunction) {
       return res.status(404).json({ message: "not found" });
     }

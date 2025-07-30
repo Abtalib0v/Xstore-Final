@@ -5,12 +5,24 @@ const api = axios.create({
   timeout: 10000,
 })
 
-export const getAPi = async (url: string, id?: string) => {
+export const buildQueryString = (params: Record<string, any>) => {
+  return Object.entries(params)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join("&");
+};
+export const getAPi = async (url: string, params?: Record<string, any>) => {
   try {
-    const fullUrl = id ? `${url}/${id}` : url;
+    let fullUrl = url;
+    if (params && Object.keys(params).length > 0) {
+      const queryString = buildQueryString(params);
+      fullUrl += (url.includes("?") ? "&" : "?") + queryString;
+    }
     const response = await api.get(fullUrl);
 
-    if (response.data) {
+    // Hem dizi hem obje destekli
+    if (Array.isArray(response.data)) {
+      return { data: response.data };
+    } else if (response.data) {
       return response.data;
     } else {
       return { isEmpty: true };
