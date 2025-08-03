@@ -34,7 +34,7 @@ const Card = ({
           <div className="group">
             <div className="mx-0 flex w-full">
               <div>
-                <div className="p-[15px] flex flex-col z-20 hover:scale-105 hover:shadow-[0px_0px_11px_1px_rgba(0,_0,_0,_0.1)] duration-300 bg-white border border-[#e1e1e1] rounded-[20px]">
+                <div className="p-[15px] flex flex-col z-20  bg-white border border-[#e1e1e1] rounded-[20px]">
                   <div className="flex flex-col object-cover aspect-square items-center justify-center rounded-xl">
                     <img
                       className="w-[345px] flex object-cover"
@@ -43,9 +43,11 @@ const Card = ({
                     />
                   </div>
                   <div className="font-medium">{truncateText(name)}</div>
-                  <div className="flex">{Array.from({ length: Number(star) || 0 }).map((_, i) => (
-              <Star key={i} size={14} color="#FFD700" fill="#FFD700" />
-            ))}</div>
+                  <div className="flex">
+                    {Array.from({ length: Number(star) || 0 }).map((_, i) => (
+                      <Star key={i} size={14} color="#FFD700" fill="#FFD700" />
+                    ))}
+                  </div>
                   <div>${price}</div>
                 </div>
               </div>
@@ -53,14 +55,44 @@ const Card = ({
           </div>
         </div>
       </Link>
-      <AddToCartButton
-        id={id}
-        name={name}
-        price={price}
-        imageUrl={imageUrl}
-      />
+      <AddToCartButton id={id} name={name} price={price} imageUrl={imageUrl} />
     </div>
+//     <div className="border border-solid border-[#e5e5e5] rounded-[20px] px-[5px] pt-[5px] pb-[25px]">
+//   <div className="relative group">
+//     <img
+//       src="https://xstore.8theme.com/elementor/demos/minimal-electronics/wp-content/uploads/sites/71/2022/02/28_1-1-366x366.jpeg"
+//       alt=""
+//     />
+//     <div className="absolute top-[10px] right-[10px] opacity-0 transition-all group-hover:opacity-100">
+//       <i className="ri-heart-line text-[18px]"></i>
+//     </div>
+//     <div className="absolute w-full bottom-[10px]">
+//       <button className="transform translate-y-[60%] opacity-0 flex items-center p-10px bg-black text-white rounded-[20px] text-[18px] transition-all group-hover:transform group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible">
+//         <i className="ri-eye-line"></i> Quick shop
+//       </button>
+//     </div>
+//   </div>
+//   <div className="flex flex-col items-center justify-center">
+//     <h2 className="text-[#222222] text-[16px] font-medium mb-[15px]">
+//       Amazon Echo Dot (3rd Gen) Smart
+//     </h2>
+//     <p className="mb-[10px] text-[#888888]">Brand 7</p>
+//     <div className="stars">
+//       <i className="ri-star-s-fill"></i>
+//       <i className="ri-star-s-fill"></i>
+//       <i className="ri-star-s-fill"></i>
+//       <i className="ri-star-s-fill"></i>
+//       <i className="ri-star-s-fill"></i>
+//     </div>
+//     <h3>$805.00</h3>
+//     <button className="text-[16px] font-bold transform-none rounded">
+//       Add to cart
+//     </button>
+//   </div>
+// </div>
   );
 };
 
+
 export default Card;
+

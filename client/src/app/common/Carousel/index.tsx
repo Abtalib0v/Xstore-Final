@@ -36,7 +36,7 @@ export const CarouselSize = () => {
                 key={idx}
                 className="basis-[100%] py-[100px]  items-center text-center md:basis-[48%] mr-[30px] pl-0 w-full 2xl:basis-[23.6%]"
               >
-                <div>
+                <div className="hover:scale-105 hover:shadow-[0px_0px_11px_1px_rgba(0,_0,_0,_0.1)] duration-300">
                      <Card
                      addToCart={() => addToCart(item)}
                      id={item._id}

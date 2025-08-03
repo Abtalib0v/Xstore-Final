@@ -7,41 +7,59 @@ const ProductColorSchema = require("../Models/Product/ProductColorSchema");
 
 const getAllProducts = async (req, res) => {
   try {
-    const { color, category, minPrice, maxPrice,star} = req.query;
+    const { color, category, minPrice, maxPrice, star } = req.query;
 
     let filter = {};
 
-    // COLOR filtresi
+    // COLOR filtresi - çoklu destek
     if (color) {
-      const colorDoc = await ProductColorSchema.findOne({ name: color });
-      if (colorDoc) {
-        filter["colors"] = colorDoc._id;
+      // color parametresi "Red,Blue" gibi olabilir, parçala
+      const colorNames = color.split(",").map((c) => c.trim());
+
+      // İlgili renklerin _id'lerini bul
+      const colorDocs = await ProductColorSchema.find({ name: { $in: colorNames } });
+
+      if (colorDocs.length > 0) {
+        // Renk id'leri dizisi
+        const colorIds = colorDocs.map((doc) => doc._id);
+        filter["colors"] = { $in: colorIds };
       } else {
+        // Hiç eşleşme yoksa sonuç boş olmalı
         filter["colors"] = null;
       }
     }
-    if (star) {
-  filter["star"] = Number(star);
-}
 
-    // CATEGORY filtresi
+    // CATEGORY filtresi - çoklu destek
     if (category) {
-      const categoryDoc = await ProductCategorySchema.findOne({ name: category });
-      if (categoryDoc) {
-        filter["categories"] = categoryDoc._id;
+      const categoryNames = category.split(",").map((c) => c.trim());
+      const categoryDocs = await ProductCategorySchema.find({ name: { $in: categoryNames } });
+
+      if (categoryDocs.length > 0) {
+        const categoryIds = categoryDocs.map((doc) => doc._id);
+        filter["categories"] = { $in: categoryIds };
       } else {
         filter["categories"] = null;
       }
     }
 
-    // PRICE filtresi
-    if (minPrice || maxPrice) {
-      filter["price"] = {};
-      if (minPrice) filter["price"]["$gte"] = parseFloat(minPrice);
-      if (maxPrice) filter["price"]["$lte"] = parseFloat(maxPrice);
+    // STAR filtresi (zaten doğru)
+    if (star) {
+      const starArray = star.split(",").map(Number).filter((n) => !isNaN(n));
+      if (starArray.length === 1) {
+        filter.star = starArray[0];
+      } else if (starArray.length > 1) {
+        filter.star = { $in: starArray };
+      }
     }
 
-    // ÜRÜNLERİ GETİR
+    // PRICE filtresi (zaten doğru)
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = parseFloat(minPrice);
+      if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
+    }
+
+    // Ürünleri getir
     const products = await ProductSchema.find(filter)
       .populate("categories")
       .populate("colors");
@@ -55,6 +73,9 @@ const getAllProducts = async (req, res) => {
     return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
+
 
 
 const getAllColors = async (req, res) => {
