@@ -31,10 +31,13 @@ export default function AddToCartButton({ id, name, price, imageUrl }: Props) {
       <Button
       
         onClick={handleAddCard}
-        variant="outline"
-        className="bg-green-600 hover:bg-green-700 text-white"
+        
+        className="bg-[#2a74ed] hover:bg-[#000000] text-white py-[22px] hover:text-white px-[30px] rounded-[50px] text-[16px] font-semibold"
       >
-        Add to Cart
+        <h1 className="flex items-center gap-2 ">
+                  Add to Cart
+
+        </h1>
       </Button>
       {openDrawer && selectProduct && (
         <DrawerSection

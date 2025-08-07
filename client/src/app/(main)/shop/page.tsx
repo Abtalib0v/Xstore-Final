@@ -10,11 +10,16 @@ import AddToCartButton from "@/components/ui/addToCartButton";
 import { Button } from "@/components/ui/button";
 import { GoChevronDown } from "react-icons/go";
 import { GoChevronUp } from "react-icons/go";
+import { TfiLayoutGrid4 } from "react-icons/tfi";
+import { TfiViewGrid } from "react-icons/tfi";
+import { IoSearchOutline } from "react-icons/io5";
+
+
 
 const ShopDetailUp = () => {
   // *** Gerçek filtreler: API çağrısı için kullanılır ***
   const [filterCategory, setFilterCategory] = useState<string[]>([]);
-const [filterColor, setFilterColor] = useState<string[]>([]);
+  const [filterColor, setFilterColor] = useState<string[]>([]);
   const [filterStar, setFilterStar] = useState<number[]>([]);
   const [filterMinPrice, setFilterMinPrice] = useState("");
   const [filterMaxPrice, setFilterMaxPrice] = useState("");
@@ -47,17 +52,20 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
         filterMinPrice === "" &&
         filterMaxPrice === "";
 
-      return getAPi("products", isFilterEmpty
-        ? {}
-        : {
-            ...(filterCategory.length > 0 && {
-              category: filterCategory.join(","),
-            }),
-            ...(filterStar.length > 0 && { star: filterStar.join(",") }),
-            ...(filterColor && { color: filterColor }),
-            ...(filterMinPrice && { minPrice: filterMinPrice }),
-            ...(filterMaxPrice && { maxPrice: filterMaxPrice }),
-          });
+      return getAPi(
+        "products",
+        isFilterEmpty
+          ? {}
+          : {
+              ...(filterCategory.length > 0 && {
+                category: filterCategory.join(","),
+              }),
+              ...(filterStar.length > 0 && { star: filterStar.join(",") }),
+              ...(filterColor && { color: filterColor }),
+              ...(filterMinPrice && { minPrice: filterMinPrice }),
+              ...(filterMaxPrice && { maxPrice: filterMaxPrice }),
+            }
+      );
     },
     enabled: false, // otomatik fetch yok, manuel refetch kullanacağız
   });
@@ -77,8 +85,20 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
   useEffect(() => {
     refetch();
   }, []);
-  
 
+  const cards = Array.from({ length: 17 }, (_, i) => ({
+    id: i + 1,
+    title: `Card ${i + 1}`,
+  }));
+  const [visibleCount, setVisibleCount] = useState(cards.length);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const options = [1, 4, 7, 10, cards.length];
+  const handleChange = (e:any) => {
+    const value = e.target.value;
+    setVisibleCount(value === "all" ? cards.length : parseInt(value));
+  };
+  const [isGrid, setIsGrid] = useState(true);
+  const cardsGrid = Array.from({ length: 12 }, (_, i) => `Card ${i + 1}`);
   const SetByColorWithName = (name: any) => {
     switch (name) {
       case "Black":
@@ -107,14 +127,16 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
 
   const toggleTempCategory = (category: string) => {
     setTempCategory((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
     );
   };
   const toggleTempColor = (color: string) => {
-  setTempColor((prev) =>
-    prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]
-  );
-};
+    setTempColor((prev) =>
+      prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]
+    );
+  };
 
   // Search butonuna basılınca temp filtreler gerçek filtrelere atanır ve sorgu tetiklenir
   const handleSearchClick = () => {
@@ -130,65 +152,70 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
   return (
     <div className="container-fluid px-[80px] w-full">
       <div className="mx-[60px] border-[#12121230] border-b-[1px] border-solid flex items-center justify-between pb-[30px] mb-[60px]">
-        <div>
-          {/* Butonlar */}
-          <button className="p-2 " aria-label="submit">
-            <svg
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 5.5 12.5"
-              className="h-[15px]"
-            >
-              <path d="M.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11z"></path>
-              <path d="M4.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11z"></path>
-            </svg>
-          </button>
-          <button className="p-2" aria-label="submit">
-            <svg
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 9.5 12.5"
-              className="h-[15px]"
-            >
-              <path d="M.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11z"></path>
-              <path d="M4.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11z"></path>
-              <path d="M8.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11z"></path>
-            </svg>
-          </button>
-          <button className="p-2" aria-label="submit">
-            <svg
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 13.5 12.5"
-              className="h-[15px]"
-            >
-              <path d="M.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11z"></path>
-              <path d="M4.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11z"></path>
-              <path d="M8.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11z"></path>
-              <path d="M12.75 0a.76.76 0 01.75.75v11a.76.76 0 01-.75.75.76.76 0 01-.75-.75v-11z"></path>
-            </svg>
-          </button>
-        </div>
+        <div className="2xl:flex hidden ">
+  {/* Grid Butonu (sol) */}
+  <button
+    aria-label="Grid View"
+    onClick={() => setIsGrid(true)}
+    className={`p-2 text-[18px] ${isGrid ? "text-[#2A74ED]" : "text-[#000]"}`}
+  >
+    <TfiLayoutGrid4 />
+  </button>
+
+  {/* List Butonu (sağ) */}
+  <button
+    aria-label="List View"
+    onClick={() => setIsGrid(false)}
+    className={`p-2 text-[18px] ${!isGrid ? "text-[#2A74ED]" : "text-[#000]"}`}
+  >
+    <TfiViewGrid />
+  </button>
+</div>
         <div>
           <div className="flex items-center gap-5">
-            <label className="font-bold text-[#121212bf] text-[14px]">
-              Sort by:{" "}
-              <select className="outline-0 border-[1px] border-[#12121225] font-normal rounded-[5px] pt-2 pb-[7px] pl-3 text-[#121212ab] w-[165px]">
-                <option>Alphabetically, A-Z</option>
-                <option>Featured</option>
-              </select>
-            </label>
-            <h1 className="text-[14px] font-medium">
-              {products?.data?.length || 0} products
-            </h1>
+            <div className="relative inline-block text-left mb-4">
+              <label htmlFor="cardCount" className="font-medium">
+          Show
+        </label>
+        <select
+          id="cardCount"
+          value={visibleCount === cards.length ? "all" : visibleCount}
+          onChange={handleChange}
+          className="px-3 py-2 border rounded bg-white shadow-sm focus:outline-none"
+        >
+          {[1, 4, 7, 10].map((num) => (
+            <option key={num} value={num}>
+              {num}
+            </option>
+          ))}
+          <option value="all">All</option>
+        </select>
+
+              {showDropdown && (
+                <div className="absolute z-10 mt-2 w-32 bg-white border rounded shadow-lg">
+                  {options.map((count, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setVisibleCount(count);
+                        setShowDropdown(false);
+                      }}
+                      className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                    >
+                      {count === cards.length ? "All" : count}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       <div className="flex flex-col mx-[60px]">
-        <div className="grid grid-cols-12 gap-5">
+        <div className="grid 2xl:grid-cols-12 grid-cols-1 gap-5">
           <div className="grid col-span-10">
-            <div className="grid grid-cols-12 gap-[30px] !font-dm">
+            <div className="grid 2xl:grid-cols-12 grid-cols-1 gap-[30px] !font-dm">
               {/* Kategori Accordion */}
               <div className="grid col-span-3 relative">
                 <button
@@ -196,7 +223,13 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
                   className="w-full text-left min-h-[48px] py-3 px-4 border border-[#e5e5e5] rounded-[50px] flex justify-between items-center font-[100] text-[14px] bg-white"
                 >
                   CATEGORIES
-                  <span>{openAccordion === "category" ? <GoChevronUp /> : <GoChevronDown />}</span>
+                  <span>
+                    {openAccordion === "category" ? (
+                      <GoChevronUp />
+                    ) : (
+                      <GoChevronDown />
+                    )}
+                  </span>
                 </button>
                 {openAccordion === "category" && (
                   <div className="absolute top-[110%] left-0 w-full bg-white border border-[#e1e1e1] rounded-md shadow-lg z-10 overflow-hidden max-h-[300px] overflow-auto p-3">
@@ -227,10 +260,16 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
                   className="w-full text-left min-h-[48px] py-3 px-4 border border-[#e5e5e5] rounded-[50px] flex justify-between items-center font-[100] text-[14px] bg-white"
                 >
                   Price
-                  <span>{openAccordion === "price" ? <GoChevronUp /> : <GoChevronDown />}</span>
+                  <span>
+                    {openAccordion === "price" ? (
+                      <GoChevronUp />
+                    ) : (
+                      <GoChevronDown />
+                    )}
+                  </span>
                 </button>
                 {openAccordion === "price" && (
-                  <div className="absolute top-[110%] left-0 w-full bg-white border border-[#e1e1e1] rounded-md shadow-lg z-10 overflow-hidden p-4">
+                  <div className="absolute top-[110%] left-0 w-full bg-white border border-[#e1e1e1] rounded-md shadow-lg z-10 p-4">
                     <div className="flex text-[14px] text-[#121212bf] gap-3">
                       <label className="w-full flex rounded-[5px] border">
                         <div className="flex items-center">
@@ -238,7 +277,7 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
                           <input
                             type="number"
                             placeholder="0"
-                            className="py-2 w-[100px] mr-[10px] outline-0"
+                            className="py-2 w-full mr-[10px] outline-0"
                             value={tempMinPrice}
                             onChange={(e) => setTempMinPrice(e.target.value)}
                           />
@@ -267,30 +306,36 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
               {/* Color Accordion */}
               <div className="grid col-span-3 relative">
                 <button
-  onClick={() => toggleAccordion("color")}
-  className="w-full text-left min-h-[48px] py-3 px-4 border border-[#e5e5e5] rounded-[50px] flex justify-between items-center font-[100] text-[14px] bg-white"
->
-  <div className="flex items-center gap-2 flex-wrap">
-    <span>Color</span>
-    {tempColor.length > 0 && tempColor.map(color => (
-      <span
-        key={color}
-        className="text-xs text-[#555] bg-[#f2f2f2] px-2 py-1 rounded-full"
-      >
-        {color}
-      </span>
-    ))}
-  </div>
-  <span>{openAccordion === "color" ? <GoChevronUp /> : <GoChevronDown />}</span>
-</button>
+                  onClick={() => toggleAccordion("color")}
+                  className="w-full text-left min-h-[48px] py-3 px-4 border border-[#e5e5e5] rounded-[50px] flex justify-between items-center font-[100] text-[14px] bg-white"
+                >
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span>Color</span>
+                    {tempColor.length > 0 &&
+                      tempColor.map((color) => (
+                        <span
+                          key={color}
+                          className="text-xs text-[#555] bg-[#f2f2f2] px-2 py-1 rounded-full"
+                        >
+                          {color}
+                        </span>
+                      ))}
+                  </div>
+                  <span>
+                    {openAccordion === "color" ? (
+                      <GoChevronUp />
+                    ) : (
+                      <GoChevronDown />
+                    )}
+                  </span>
+                </button>
 
                 {openAccordion === "color" && (
                   <div className="absolute top-[110%] left-0 w-full bg-white border border-[#e1e1e1] rounded-md shadow-lg z-10 overflow-hidden p-3 max-h-[300px] overflow-auto">
                     {colors?.data?.map((item: any, index: number) => (
                       <button
                         key={item._id ?? index}
-                        onClick={() => toggleTempColor(item.name)
-                        }
+                        onClick={() => toggleTempColor(item.name)}
                         className="flex justify-between cursor-pointer w-full text-[14px] text-[#121212bf] items-center py-[10px]"
                       >
                         <div className="flex items-center">
@@ -315,7 +360,13 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
                   className="w-full text-left min-h-[48px] py-3 px-4 border border-[#e5e5e5] rounded-[50px] flex justify-between items-center font-[100] text-[14px] bg-white"
                 >
                   Star
-                  <span>{openAccordion === "star" ? <GoChevronUp /> : <GoChevronDown />}</span>
+                  <span>
+                    {openAccordion === "star" ? (
+                      <GoChevronUp />
+                    ) : (
+                      <GoChevronDown />
+                    )}
+                  </span>
                 </button>
                 {openAccordion === "star" && (
                   <div className="absolute top-[110%] left-0 w-full bg-white border border-[#e1e1e1] rounded-md shadow-lg z-10 overflow-hidden p-4">
@@ -357,30 +408,33 @@ const [filterColor, setFilterColor] = useState<string[]>([]);
 
           {/* Search Butonu */}
           <div className="col-span-2 flex items-center">
-            <Button className="w-full h-[40px]" onClick={handleSearchClick}>
-              Search
+            <Button className="w-full h-[40px] rounded-[50px] bg-[#2a74ed]" onClick={handleSearchClick}>
+              <h1 className="text-[16px] items-center gap-1 flex"><IoSearchOutline/> Search</h1>
             </Button>
           </div>
         </div>
 
         {/* Ürün listesi */}
         <div className="mt-6">
-          <div className="grid grid-cols-12 gap-5">
-            {products?.data?.map((item: any, idx: number) => (
-              <div className="col-span-3" key={item._id ?? idx}>
-                <Card
-                  addToCart={() => AddToCartButton(item)}
-                  id={item._id}
-                  item={item._id}
-                  idx={idx}
-                  name={item?.name ?? ""}
-                  star={item?.star ?? ""}
-                  price={item?.price ?? ""}
-                  categories={item?.categories?.name ?? ""}
-                  imageUrl={item?.imageUrl}
-                />
-              </div>
-            ))}
+          <div className="grid grid-cols-12 gap-5 w-full h-full">
+            {products?.data
+              ?.slice(0, visibleCount)
+              .map((item: any, idx: number) => (
+                <div className={`grid gap-4 ${isGrid ? "2xl:col-span-3" : "2xl:col-span-6 h-[302px]"} col-span-12 h-full`} key={item._id ?? idx}>
+                  <Card
+                    addToCart={() => AddToCartButton(item)}
+                    id={item._id}
+                    item={item._id}
+                    idx={idx}
+                    name={item?.name ?? ""}
+                    star={item?.star ?? ""}
+                    price={item?.price ?? ""}
+                    categories={item?.categories?.name ?? ""}
+                    imageUrl={item?.imageUrl}
+                    viewMode={isGrid ? "grid" : "list"}
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>
