@@ -35,7 +35,7 @@ export default function BlogPagination() {
 
   return (
     <>
-      <div className="container-fluid 2xl:px-[150px] px-0 w-full flex justify-center  ">
+      <div>
         <div className="grid grid-cols-12">
 
         

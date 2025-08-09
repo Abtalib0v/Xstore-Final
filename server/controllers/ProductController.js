@@ -137,16 +137,21 @@ const getCategoryById = async (req, res) => {
 };
 
 const getProductById = async (req, res) => {
-  const id = req.params.id;
-  if (!id || id === "undefined") {
-    return res.status(400).json({ message: "Geçersiz ID product" });
+  try {
+    const product = await ProductSchema.findById(req.params.id)
+      .populate("categories")
+      .populate("colors");
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
   }
-  const product = await ProductSchema.findById(id);
-  if (!product) {
-    return res.status(404).json({ message: 'product not found' });
-  }
-  return res.json(product);
 };
+
 
 const deleteAPiWithParams = async (req, res) => {
   const id = req.params.id;

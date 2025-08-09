@@ -105,8 +105,6 @@ const Header = () => {
             }
         </div>
       </div>
-      <div className=" ">
-      </div>
     </div>
 
   );

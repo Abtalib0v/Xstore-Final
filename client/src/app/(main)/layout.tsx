@@ -5,6 +5,20 @@ import { QueryProviders } from "../Providers/QueryProviders";
 // import { CardProvider } from "../Providers/CardProviders";
 import MainLayout from "../features/Layout/MainLayout";
 import { CardProvider } from "../Providers/CardProviders";
+import {Roboto} from "next/font/google";
+import { DM_Sans } from "next/font/google";
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+});
+
+const roboto = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${dmSans.variable} antialiased`}
       >
         <QueryProviders>
           <CardProvider>

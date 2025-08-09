@@ -35,13 +35,21 @@ const getCategoryById = async (req, res) => {
   return res.json(category);
 };
 const getBlogById = async (req, res) => {
-  const id = req.params.id;
-  const blog = await BlogSchema.findById(id);
-  if (!blog) {
-    return res.status(404).json({ message: 'blog not found' });
+  try {
+    const id = req.params.id;
+    const blog = await BlogSchema.findById(id)
+      .populate("categories");
+    
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+    
+    return res.status(200).json(blog);
+  } catch (error) {
+    return res.status(500).json({ message: 'Server error', error: error.message });
   }
-  return res.json(blog);
 };
+
 const deleteAPiWithParams = async (req, res) => {
   const id = req.params.id;
   if (!id) {

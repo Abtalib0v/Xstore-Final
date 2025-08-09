@@ -6,7 +6,14 @@ import React from "react";
 import { LuCalendarDays } from "react-icons/lu";
 import { BsEye } from "react-icons/bs";
 import { FaRegCommentAlt } from "react-icons/fa";
-
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 type Params = {
   params: {
     id: string;
@@ -29,17 +36,45 @@ const BlogDetailSection = () => {
 
   return (
     <div className="container-fluid px-[150px] w-full ">
+      <div className="pt-[15px] pb-[50px]">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/blog">
+                {data?.categories.name}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{data?.name}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+
       <div className="flex 2xl:grid-cols-12 2xl:grid flex-col gap-[32px] ">
         <div className="grid col-span-9">
           <div className="flex flex-col 2xl:col-span-12 col-span-12 mb-[22px]">
-          <div className=" border-[1px] border-[#ddd] rounded-[16px] overflow-hidden">
-            <img className="rounded-[8px] w-full" src={data?.imageUrl} alt="" />
+            <div className=" border-[1px] border-[#ddd] rounded-[16px] overflow-hidden">
+              <img
+                className="rounded-[8px] w-full"
+                src={data?.imageUrl}
+                alt=""
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-col 2xl:col-span-12 col-span-12 ">
-          <div className="flex flex-col gap-[12px]">
-            {/* <div>
+          <div className="flex flex-col 2xl:col-span-12 col-span-12 ">
+            <div className="flex flex-col gap-[12px]">
+              {/* <div>
             {item?.sale && (
               <span className=" bg-[#2b2b2b] tracking-[.2em] leading-[1em]  text-[12px] p-[8px] rounded-[8px]">
                 SALE
@@ -47,21 +82,25 @@ const BlogDetailSection = () => {
             )}
         </div> */}
 
-            <h2 className="text-[24px] w-full 2xl:w-[42%] ">{data?.name}</h2>
-            <h1 className="text-[16px] text-[#888888] flex gap-1.5 items-center"><LuCalendarDays />{data?.createdAtFormatted} / Posted by Rose Tyler / <BsEye />{data?.views?? 0} / <FaRegCommentAlt />{data?.commentCount?? 0}</h1>
-            <p className=" text-[18px] text-[#777777]" >{data?.description}</p>
+              <h2 className="text-[24px] w-full 2xl:w-[42%] ">{data?.name}</h2>
+              <h1 className="text-[16px] text-[#888888] flex gap-1.5 items-center">
+                <LuCalendarDays />
+                {data?.createdAtFormatted} / Posted by Rose Tyler / <BsEye />
+                {data?.views ?? 0} / <FaRegCommentAlt />
+                {data?.commentCount ?? 0}
+              </h1>
+              <p className=" text-[18px] text-[#777777]">{data?.description}</p>
+            </div>
+            <div className="my-[32px]">
+              <div className="flex flex-col gap-[16px]"></div>
+            </div>
           </div>
-          <div className="my-[32px]">
-            <div className="flex flex-col gap-[16px]"></div>
-          </div>
-        </div>  
         </div>
         <div className="grid col-span-3">
-
-<div>
-</div>
+          <div>
+            
+          </div>
         </div>
-        
       </div>
     </div>
   );

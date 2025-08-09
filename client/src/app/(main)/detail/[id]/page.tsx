@@ -8,7 +8,14 @@ import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import DrawerSection from "../../Drawer";
 import AddToCartButton from "@/components/ui/addToCartButton";
-
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 // type Params = {
 //     params: {
 //         id: string
@@ -46,7 +53,21 @@ const DetailSection = ({
     const item = data?.data?.[0];
   return (
     <div className='flex flex-col container mx-auto px-[15px] w-full 2xl:w-[1400px] pt-[24px]'>
-    
+    <Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/shop">{data?.categories.name}</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbPage>{data?.name}</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
 
     <div className='flex 2xl:grid-cols-12 2xl:grid flex-col gap-[32px] '>
       <div className='flex flex-col 2xl:col-span-6 col-span-12'>

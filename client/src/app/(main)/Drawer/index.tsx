@@ -4,6 +4,7 @@ import { useCart } from "@/app/Providers/CardProviders";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 // import { removeFromCart } from "@/app/Providers/CardProviders";
 type DrawerSectionProps = {
   open: boolean;
@@ -26,7 +27,12 @@ export default function DrawerSection({
         <Box sx={{ width: 400 }} role="presentation" className="p-[20px]">
           <h1 className="text-[18px] font-bold mb-[10px]">Cart Items</h1>
           {cartItems.length === 0 ? (
-            <p className="text-gray-500">Sepetiniz boş</p>
+            <div className="flex flex-col items-center justify-center ">
+               <p className="text-gray-500 mb-[20.02px]">No products in the cart.</p>
+               <Link href="/shop"  className="rounded-[50px] px-[30.8px] py-[10.5px] bg-[#2a74ed] text-[16px] text-[#ffffff]">Return To Shop</Link>
+            </div>
+           
+            
           ) : (
             cartItems.map((item: any, index: number) => (
               <div

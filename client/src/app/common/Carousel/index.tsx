@@ -11,8 +11,8 @@ import {
 import { QueryKeys } from "@/app/constant/QueryKeys";
 import { getAPi } from "@/app/http/api";
 import { useQuery } from "@tanstack/react-query";
-import Card from "@/app/(main)/cart";
 import { useCart } from "@/app/Providers/CardProviders";
+import Card from "@/app/(main)/cart";
 
 export const CarouselSize = () => {
   const { data, isLoading, isError, error } = useQuery({
@@ -36,7 +36,7 @@ export const CarouselSize = () => {
                 key={idx}
                 className="basis-[100%] py-[100px]  items-center text-center md:basis-[48%] mr-[30px] pl-0 w-full 2xl:basis-[23.6%]"
               >
-                <div className="hover:scale-105 hover:shadow-[0px_0px_11px_1px_rgba(0,_0,_0,_0.1)] duration-300">
+                <div className="hover:scale-105 rounded-[20px] hover:shadow-[0px_0px_11px_1px_rgba(0,_0,_0,_0.1)] duration-300">
                      <Card
                      addToCart={() => addToCart(item)}
                      id={item._id}
@@ -47,6 +47,7 @@ export const CarouselSize = () => {
                 price={item?.price ?? ""}
                 categories={item?.categories?.name ?? ""}
                 imageUrl={item?.imageUrl}
+                viewMode="grid"
                 
                 />
                 </div>
