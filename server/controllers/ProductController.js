@@ -116,14 +116,34 @@ const createProductColor = async (req, res) => {
   });
 };
 const getAllCategories = async (req, res) => {
-  const categories = await ProductCategorySchema.find();
-  if (!categories || categories.length === 0) {
-    return res.status(200).json([]);
+  try {
+    const categoriesWithCount = await ProductCategorySchema.aggregate([
+      {
+        $lookup: {
+          from: "products", // ürünler koleksiyonu adı
+          localField: "_id",
+          foreignField: "categories",
+          as: "products",
+        },
+      },
+      {
+        $addFields: {
+          count: { $size: "$products" },
+        },
+      },
+      {
+        $project: {
+          products: 0, // ürün detaylarını gösterme, sadece sayıyı al
+        },
+      },
+    ]);
+
+    return res.status(200).json({ data: categoriesWithCount });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error: error.message });
   }
-  return res.status(200).json({
-    data: categories,
-  });
 };
+
 const getCategoryById = async (req, res) => {
   const id = req.params.id;
   if (!id || id === "undefined") {

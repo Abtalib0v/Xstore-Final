@@ -2,7 +2,7 @@
 import { getAPi } from "@/app/http/api";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { LuCalendarDays } from "react-icons/lu";
 import { BsEye } from "react-icons/bs";
 import { FaRegCommentAlt } from "react-icons/fa";
@@ -14,17 +14,27 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import AddToCartButton from "@/components/ui/addToCartButton";
+import { QueryKeys } from "@/app/constant/QueryKeys";
+import Card from "../../cart";
+import { useCart } from "@/app/Providers/CardProviders";
 type Params = {
   params: {
     id: string;
   };
 };
+
 const BlogDetailSection = () => {
   const params = useParams();
+    const [isGrid, setIsGrid] = useState(true);
+  
   const { data } = useQuery({
     queryKey: ["blog", params.id],
     queryFn: () => getAPi(`/blogs/${params.id}`),
-  });
+  });  
+  const { truncateText } = useCart();
+
   // const { id } = useParams();
   //   const { data} = useQuery({
   // queryKey: ["product", id],
@@ -33,6 +43,22 @@ const BlogDetailSection = () => {
   const item = data?.data?.[0];
   // const item = data?.data?.[0];
   // console.log(data)
+ const { data: categoriesData, isLoading: catLoading } = useQuery({
+    queryKey: ["blog-categories"],
+    queryFn: () => getAPi("/blogs/categories"),
+  });
+const { data: blogData } = useQuery({
+    queryKey: ["blog", params.id],
+    queryFn: () => getAPi(`/blogs/${params.id}`),
+  });
+  const blog = blogData?.data;
+  const categories = categoriesData?.data || [];
+   const { data: productsData, isLoading: productsLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: () => getAPi("/products"),
+  });
+    const products = productsData?.data || [];
+
 
   return (
     <div className="container-fluid px-[150px] w-full ">
@@ -96,10 +122,54 @@ const BlogDetailSection = () => {
             </div>
           </div>
         </div>
-        <div className="grid col-span-3">
-          <div>
+        <div className="grid col-span-3 h-auto">
+          <div className="grid grid-cols-1 gap-[30px]">
+            <div className=" flex flex-col gap-[20px]">
+              <div className="flex flex-col border border-[#E5E5E5]  rounded-[20px] p-[35px]">
+            <div className="text-[#222222] font-medium mb-[20px] border-b pb-[20px] text-[17.92px]">Categories</div>
+            <div className=" text-[17.92px] flex flex-col gap-[10px] text-[#888888] list-none">
+              {categories.map((cat: any) => (
+                  <li key={cat._id}>
+                    <Link
+                      href={`/blog/category/${cat._id}`}
+                      className="text-[#555] hover:text-black flex gap-1.5 duration-200"
+                    >
+                      {cat.name} <div className="text-[#000]">({cat.count})</div>
+                    </Link>
+                  </li>
+                ))}
+            </div>
+          </div>
+          <div className="flex flex-col border border-[#E5E5E5]  rounded-[20px] p-[35px]">
+            <div className="text-[#222222] font-medium mb-[20px] border-b pb-[20px] text-[17.92px]">Best-Selling</div>
+            <div className=" text-[17.92px] flex flex-col gap-[10px] text-[#888888] list-none">
+              {products.slice(0, 5).map((item:any) => (
+    <div key={item._id} className="flex items-center p-2">
+      <Link href={`/detail/${item._id}`}>
+      <img
+        src={item.imageUrl}
+        alt={item.name}
+        className="w-[70px] h-[70px] object-cover mr-[20px] "
+      />
+      </Link>
+      
+      <div className="flex flex-col  overflow-hidden">
+        <Link href={`/detail/${item._id}`}>     
+           <h3 className="text-[15.96px] font-medium text-[#222222] hover:text-[#888] duration-200">{
+           truncateText(item.name, 23)}
+           </h3>
+
+        </Link>
+        <p className="text-sm font-medium">${item.price}</p>
+      </div>
+    </div>
+  ))}
+            </div>
+          </div>
+            </div>
             
           </div>
+          
         </div>
       </div>
     </div>

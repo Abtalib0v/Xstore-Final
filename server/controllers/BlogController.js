@@ -18,13 +18,28 @@ const getAllBlogs = async (req, res) => {
   });
 };
 const getAllCategories = async (req, res) => {
-  const categories = await BlogCategorySchema.find();
-  if (!categories || categories.length === 0) {
-    return res.status(200).json([]);
+  try {
+    const categories = await BlogCategorySchema.aggregate([
+      {
+        $lookup: {
+          from: "blogs", // Blog koleksiyonunun MongoDB'deki ismi
+          localField: "_id",
+          foreignField: "categories",
+          as: "blogs"
+        }
+      },
+      {
+        $project: {
+          name: 1,
+          count: { $size: "$blogs" }
+        }
+      }
+    ]); return res.status(200).json({
+      data: categories,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error: error.message });
   }
-  return res.status(200).json({
-    data: categories,
-  });
 };
 const getCategoryById = async (req, res) => {
   const id = req.params.id;
