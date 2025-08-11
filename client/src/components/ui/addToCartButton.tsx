@@ -10,9 +10,10 @@ type Props = {
   name: string;
   price: number;
   imageUrl: string;
+  quantity?: number;
 };
 
-export default function AddToCartButton({ id, name, price, imageUrl }: Props) {
+export default function AddToCartButton({ id, name, price, imageUrl, quantity=1 }: Props) {
   const { addToCart } = useCart();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [selectProduct, setSelectProduct] = useState<any>(null);
@@ -21,8 +22,8 @@ export default function AddToCartButton({ id, name, price, imageUrl }: Props) {
     e.stopPropagation();
     e.preventDefault();
 
-    addToCart({ _id: id, name, price, imageUrl });
-    setSelectProduct({ id, name, price, imageUrl });
+    addToCart({ _id: id, name, price, imageUrl, quantity });
+    setSelectProduct({ id, name, price, imageUrl, quantity });
     setOpenDrawer(true);
   };
 
@@ -62,6 +63,7 @@ export default function AddToCartButton({ id, name, price, imageUrl }: Props) {
                   {selectProduct.name}
                 </div>
                 <div>${selectProduct.price}</div>
+                <div>Quantity:{selectProduct.quantity}</div>
               </div>
             </div>
           </div>

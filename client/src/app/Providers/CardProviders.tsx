@@ -19,24 +19,25 @@ useEffect(() => {
     }
 }, [cart]);
 
-const addToCart = (item: any) => {
+const addToCart = (item:any) => {
   setCart((prevCart) => {
-    const existingItem = prevCart.find(
-      (cartItem) => cartItem.id === item._id
-    );
+    const existingItem = prevCart.find(cartItem => cartItem.id === item._id);
 
     if (existingItem) {
-      return prevCart.map((cartItem) =>
+      // zaten varsa üzerine ekle
+      return prevCart.map(cartItem =>
         cartItem.id === item._id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          ? { ...cartItem, quantity: cartItem.quantity + (item.quantity || 1) }
           : cartItem
       );
     }
 
-    // item._id varsa onu id olarak ata
-    return [...prevCart, { ...item, id: item._id, quantity: 1 }];
+    // yoksa yeni ekle
+    return [...prevCart, { ...item, id: item._id, quantity: item.quantity || 1 }];
   });
 };
+
+
 const truncateText = (text: string, maxLength = 40) => {
   return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 };
@@ -71,11 +72,12 @@ const getTotalItems = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
   const getCartItems = () => {
-    return cart.map((item) => ({
-      ...item,
-      totalPrice: item.price * item.quantity,
-    }));
-  };
+  return cart.map((item) => ({
+    ...item,
+    totalPrice: item.price * item.quantity,
+  }));
+};
+
   const getCartSummary = () => {
     return {
       totalItems: getTotalItems(),

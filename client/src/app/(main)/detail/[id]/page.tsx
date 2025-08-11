@@ -3,7 +3,7 @@ import { getAPi } from "@/app/http/api";
 import { useCart } from "@/app/Providers/CardProviders";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import AddToCartButton from "@/components/ui/addToCartButton";
 import {
   Breadcrumb,
@@ -14,9 +14,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { Star } from "lucide-react";
 
 const DetailSection = () => {
   const params = useParams();
+  const [quantity, setQuantity] = useState(1);
 
   // Tek ürün detayı çek
   const { data: productData, isLoading: productLoading } = useQuery({
@@ -50,7 +52,7 @@ const DetailSection = () => {
   }
 
   return (
-    <div className="flex flex-col container mx-auto px-[15px] w-full 2xl:w-[1400px] pt-[24px]">
+    <div className="container-fluid 2xl:px-[150px] px-[50px] pt-[15px] w-full ">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -59,9 +61,7 @@ const DetailSection = () => {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink href="/shop">
-              {product?.categories && product.categories.length > 0
-                ? product.categories[0].name
-                : "Category"}
+              {product?.categories.name}
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -72,27 +72,67 @@ const DetailSection = () => {
       </Breadcrumb>
 
       <div className="flex 2xl:grid-cols-12 2xl:grid flex-col gap-[32px]">
-        <div className="grid col-span-9">
-          <div className=" border-[1px] border-[#ddd] rounded-[16px] overflow-hidden">
-            <img className="rounded-[8px] w-full" src={product?.imageUrl} alt="" />
+        <div className="grid col-span-9 pt-[15px] pr-[15px]">
+          <div className=" grid grid-cols-12 h-auto">
+            <div className="grid items-start 2xl:col-span-6 col-span-12">
+              <div className="flex !items-start border-[1px] h-auto mt-[38.4px] col-span-12 border-[#ddd] rounded-[16px] overflow-hidden">
+                <img
+                  className="rounded-[8px] w-full h-auto object-cover"
+                  src={product?.imageUrl}
+                  alt=""
+                />
+              </div>
+            </div>
+            <div className="flex flex-col 2xl:col-span-6 ml-[30px] mt-[38.4px] col-span-12 ">
+              <div className="flex flex-col gap-[12px]">
+                <h2 className="text-[28px] ">{product?.name}</h2>
+                {/* <h1 className='text-[16px] '>Made by Product Hub</h1> */}
+                <div className="flex">
+                  {Array.from({ length: Number(product?.star) || 0 }).map(
+                    (_, i) => (
+                      <Star key={i} size={14} color="#FFD700" fill="#FFD700" />
+                    )
+                  )}
+                </div>
+                <h1 className="text-[18px] text-[#a1a1a1]">
+                  ${product?.price}
+                </h1>
+                <p>{product?.description}</p>
+                <div className="flex items-center gap-3">
+                  {/* Quantity */}
+                  <div className="flex items-center border border-gray-300 rounded-lg">
+                    <button
+                      onClick={() =>
+                        setQuantity((prev:any) => Math.max(1, prev - 1))
+                      }
+                      className="px-3 py-1 text-lg font-bold"
+                    >
+                      -
+                    </button>
+                    <span className="px-3">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity((prev:any) => prev + 1)}
+                      className="px-3 py-1 text-lg font-bold"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* Add to Cart */}
+                  <AddToCartButton
+                    id={product?._id}
+                    name={product?.name}
+                    price={product?.price}
+                    imageUrl={product?.imageUrl}
+                    quantity={quantity} // yeni eklenen props
+                  />
+                </div>
+              </div>
+              <div className="my-[32px]">
+                <div className="flex flex-col gap-[16px]"></div>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col 2xl:col-span-6 col-span-12 ">
-          <div className="flex flex-col gap-[12px]">
-            <h2 className="text-[28px] ">{product?.name}</h2>
-            {/* <h1 className='text-[16px] '>Made by Product Hub</h1> */}
-            <h1 className="text-[18px] text-[#a1a1a1]">${product?.price}</h1>
-            <p>{product?.description}</p>
-            <AddToCartButton
-              id={product?._id}
-              name={product?.name}
-              price={product?.price}
-              imageUrl={product?.imageUrl}
-            />
-          </div>
-          <div className="my-[32px]">
-            <div className="flex flex-col gap-[16px]"></div>
-          </div>
-        </div>
         </div>
 
         <div className="grid col-span-3 h-auto">
@@ -104,17 +144,26 @@ const DetailSection = () => {
                   Categories
                 </div>
                 <ul className="text-[17.92px] flex flex-col gap-[10px] text-[#888888] list-none">
-                  {categories.map((cat: any) => (
-                    <li key={cat._id}>
-                      <Link
-                        href={`/product/category/${cat._id}`}
-                        className="text-[#555] hover:text-black flex gap-1.5 duration-200"
-                      >
-                        {cat.name}{" "}
-                        <div className="text-[#000]">({cat.count || 0})</div>
-                      </Link>
-                    </li>
-                  ))}
+                  {categories.map((cat: any) => {
+                    const isActive = product?.categories?._id === cat._id; // eşleşme kontrolü
+
+                    return (
+                      <li key={cat._id}>
+                        <Link
+                          href={`/product/category/${cat._id}`}
+                          className={`flex gap-1.5 duration-200 
+            ${
+              isActive
+                ? "text-black font-normal pointer-events-none"
+                : "text-[#888888] hover:text-[#222]"
+            }`}
+                        >
+                          {cat.name}{" "}
+                          <div className="text-[#000]">({cat.count || 0})</div>
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
 
