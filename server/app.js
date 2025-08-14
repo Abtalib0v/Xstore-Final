@@ -1,7 +1,8 @@
+const bycript = require("bcrypt");
 const express=require("express")
 const env=require("dotenv").config()
 const ConnectDb =require("./db/ConnectDb")
-// const AuthRouter=require("./routers/AuthRouter")
+const AuthRouter=require("./routers/AuthRouter")
 const ProductsRouter=require("./routers/ProductRouter")
 const BlogsRouter=require("./routers/BlogRouter")
 
@@ -16,7 +17,7 @@ app.use(cors({
 const PORT=3000
 ConnectDb()
 
-// app.use("/api/auth",AuthRouter)
+app.use("/api/auth",AuthRouter)
 app.use("/api",ProductsRouter)
 app.use("/api",BlogsRouter)
 
