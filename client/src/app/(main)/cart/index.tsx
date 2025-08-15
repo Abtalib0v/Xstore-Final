@@ -3,7 +3,10 @@ import { ShoppingBag, Star } from "lucide-react";
 import Link from "next/link";
 import AddToCartButton from "@/components/ui/addToCartButton";
 import { useCart } from "@/app/Providers/CardProviders";
-
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
+);
 const Card = ({
   item,
   id,
@@ -28,7 +31,41 @@ const Card = ({
   viewMode: 'grid' | 'list';
 }) => {
   const { truncateText } = useCart();
-
+const handleCheckout = async () => {
+    const stripe = await stripePromise;
+    if (!stripe) {
+      console.error("Stripe not loaded");
+      return;
+    }
+    const response = await fetch("/api/checkout-sessions/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cartItems: [
+          {
+            name: name, // Replace with actual product name
+            image: imageUrl, // Replace with actual image URL
+            price: price, // Replace with actual price
+            quantity: 1, // Adjust quantity as needed
+          },
+        ],
+        returnUrl: window.location.origin,
+      }),
+    });
+    if (!response.ok) {
+      console.error("Failed to create checkout session");
+      return;
+    }
+    const session = await response.json();
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.sessionId,
+    });
+    if (result.error) {
+      console.error("Stripe checkout error:", result.error.message);
+    }
+  };
   return (
     <div
       className={`border border-[#e1e1e1] rounded-[20px] overflow-hidden ${
@@ -79,6 +116,9 @@ const Card = ({
           imageUrl={imageUrl}
         />
             </div>
+            <Button onClick={handleCheckout} variant="default">
+            Buy Now
+          </Button>
           </div>
         </div>
       </div>

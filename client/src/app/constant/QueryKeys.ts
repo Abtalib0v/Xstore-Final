@@ -34,4 +34,8 @@ export const QueryKeys = {
         name: ["name"],
         createName: ["name-create"],
     },
+    orders: {
+        all: ["orders"],
+        updateOrderStatus: (orderId: string) => ["update-order-status", orderId],
+    },
 }

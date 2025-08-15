@@ -74,3 +74,24 @@ export const deleteAPiWithParams = async (endpoint: string, id: any) => {
     throw error;
   }
 };
+export const patchApi = async (url: string, id: string, data: any) => {
+    try {
+        const response = await api.patch(`${url}/${id}`, data);
+        return response.data;
+
+    } catch (error) {
+        throw error
+
+    }
+}
+
+export const patchOrderApi = async (url: string, data: any) => {
+    try {
+        const response = await api.patch(`${url}`, data);
+        return response.data;
+
+    } catch (error) {
+        throw error
+
+    }
+}
