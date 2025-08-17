@@ -5,7 +5,7 @@ const ConnectDb =require("./db/ConnectDb")
 const AuthRouter=require("./routers/AuthRouter")
 const ProductsRouter=require("./routers/ProductRouter")
 const BlogsRouter=require("./routers/BlogRouter")
-
+const cookieParser = require("cookie-parser");
 const bodyParser=require("body-parser")
 const cors=require("cors")
 const app=express()
@@ -13,7 +13,8 @@ const app=express()
 app.use(bodyParser.json())
 app.use(cors({
     origin:"*"
-}))
+}));
+app.use(cookieParser());
 const PORT=3000
 ConnectDb()
 

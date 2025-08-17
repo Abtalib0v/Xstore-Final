@@ -1,5 +1,5 @@
-import ProductList from "@/app/features/Admin/Products";
-import BlogList from "@/app/features/Admin/Blogs";
+import ProductList from "@/app/_features/Admin/Products";
+import BlogList from "@/app/_features/Admin/Blogs";
 
 export default function AdminShopPage() {
     return (

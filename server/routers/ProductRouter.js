@@ -22,10 +22,10 @@ const multer = require("multer");
 const { storage } = require("../lib/cloudinaryConfig");
 const { mongo, default: mongoose } = require("mongoose");
 const { getProductById } = require("../controllers/ProductController");
-const {
-  authProtectMiddleware,
-} = require("../middleware/authProtectMiddleware");
-const upload = multer({ storage: storage });
+const { authProtectMiddleware } = require("../middleware/authProtectMiddleware");
+const { createOrderAfterPayment } = require("../controllers/ProductController");
+
+const upload = multer({ storage: storage });  
 const router = express.Router();
 
 router.get("/products",  getAllProducts);
@@ -43,8 +43,10 @@ router.post("/products/create/category", createProductCategory);
 router.get("/products/categories", getAllCategories);
 router.get("/products/categories/:id",getCategoryById);
 router.delete("/products/categories/:id", deleteAPiWithParams);
-router.post("/create/order", createOrder);
-router.get("/orders", getAllOrders);
+// router.post("/create/order", createOrder);
+router.post("/create/order/after-payment", createOrderAfterPayment);
+
+router.get("/orders", authProtectMiddleware, getAllOrders);
 router.get("/admin/orders", authProtectMiddleware, getAllOrdersInDashboard);
 router.patch("/orders/:id/status", updateOrderStatus);
 router.get("/products/:id",  getProductById);

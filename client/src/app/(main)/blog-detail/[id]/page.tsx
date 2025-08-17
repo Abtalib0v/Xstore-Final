@@ -1,5 +1,5 @@
 "use client";
-import { getAPi } from "@/app/http/api";
+import { getAPi } from "@/app/_http/api";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
@@ -16,9 +16,9 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import AddToCartButton from "@/components/ui/addToCartButton";
-import { QueryKeys } from "@/app/constant/QueryKeys";
+import { QueryKeys } from "@/app/_constant/QueryKeys";
 import Card from "../../cart";
-import { useCart } from "@/app/Providers/CardProviders";
+import { useCart } from "@/app/_Providers/CardProviders";
 type Params = {
   params: {
     id: string;

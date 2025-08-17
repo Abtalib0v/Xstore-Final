@@ -1,4 +1,4 @@
-import AboutPage from '@/app/features/pages/AboutPage/page'
+import AboutPage from '@/app/_features/pages/AboutPage/page'
 import React from 'react'
 
 const About = () => {

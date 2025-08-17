@@ -1,6 +1,6 @@
 "use client";
-import { getAPi } from "@/app/http/api";
-import { useCart } from "@/app/Providers/CardProviders";
+import { getAPi } from "@/app/_http/api";
+import { useCart } from "@/app/_Providers/CardProviders";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";

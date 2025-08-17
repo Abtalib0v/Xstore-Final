@@ -1,4 +1,4 @@
-import ProductColorsList from "@/app/features/Admin/Products/Colors";
+import ProductColorsList from "@/app/_features/Admin/Products/Colors";
 
 export default function ProductColorPage() {
     return (

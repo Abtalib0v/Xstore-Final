@@ -1,4 +1,4 @@
-import BlogCategoryList from "@/app/features/Admin/Blogs/Caregories";
+import BlogCategoryList from "@/app/_features/Admin/Blogs/Caregories";
 
 export default function BlogCategoryPage() {
     return (

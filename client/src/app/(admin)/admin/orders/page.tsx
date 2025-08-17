@@ -1,4 +1,4 @@
-import OrderList from "@/app/features/Admin/Orders";
+import OrderList from "@/app/_features/Admin/Orders";
 
 export default function OrdersPage() {
   return (

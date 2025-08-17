@@ -1,4 +1,4 @@
-import BlogPage from '@/app/features/pages/BlogPage/page'
+import BlogPage from '@/app/_features/pages/BlogPage/page'
 import React from 'react'
 
 const BlogCart = () => {

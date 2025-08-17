@@ -1,6 +1,41 @@
-import React from "react";
+"use client";
+import { useEffect, useState } from "react";
+import { postApi } from "@/app/_http/api";
 
 const SuccessPage = () => {
+  const [orderCreated, setOrderCreated] = useState(false);
+
+  useEffect(() => {
+    const createOrder = async () => {
+      try {
+        // localStorage'dan kullanıcı ve sepet verilerini al
+        const loggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+        const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+        const totalPrice = parseFloat(localStorage.getItem("totalPrice") || "0");
+        const userAddress = localStorage.getItem("userAddress") || "";
+
+        if (!loggedInUser._id || cartItems.length === 0) return;
+
+        await postApi("/create/order/after-payment", {
+          userId: loggedInUser._id,
+          products: cartItems.map((item: any) => ({
+            product: item.id,
+            quantity: item.count,
+          })),
+          totalAmount: totalPrice,
+          address: userAddress,
+        });
+
+        setOrderCreated(true);
+        console.log("Order created successfully!");
+      } catch (err) {
+        console.error("Error creating order:", err);
+      }
+    };
+
+    createOrder();
+  }, []);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="w-full max-w-2xl p-12 mx-4 text-center transition-all transform bg-white shadow-lg rounded-xl hover:shadow-xl">
@@ -12,9 +47,9 @@ const SuccessPage = () => {
             viewBox="0 0 24 24"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M5 13l4 4L19 7"
             ></path>
           </svg>
@@ -25,31 +60,14 @@ const SuccessPage = () => {
         </h1>
 
         <p className="mb-8 text-xl text-gray-700">
-          Thank you for your purchase.
+          {orderCreated
+            ? "Thank you for your purchase. Your order has been created."
+            : "Creating your order..."}
         </p>
-
-        <div className="p-6 mb-8 rounded-lg bg-blue-50">
-          <p className="text-lg font-medium text-blue-700">
-            Your tool <span className="font-bold">"http://example.com"</span>{" "}
-            will be listed shortly.
-          </p>
-        </div>
-
-        <div className="pt-8 mt-8 border-t border-gray-100">
-          <p className="text-lg text-gray-700">
-            Have questions? Contact us at:
-          </p>
-          <a
-            href="mailto:admin@eliteai.tools"
-            className="inline-block mt-2 text-xl font-medium text-blue-600 transition-colors duration-200 hover:text-blue-800"
-          >
-            admin@eliteai.tools
-          </a>
-        </div>
 
         <div className="mt-12">
           <a
-            href="http://127.0.0.1:8000"
+            href="/"
             className="inline-block px-8 py-4 text-lg font-semibold text-white transition-colors duration-200 bg-green-600 rounded-lg hover:bg-green-700"
           >
             Return to Dashboard

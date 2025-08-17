@@ -1,4 +1,4 @@
-import ShopPage from '@/app/features/pages/ShopPage/page'
+import ShopPage from '@/app/_features/pages/ShopPage/page'
 import React from 'react'
 
 const ShopDetailUp = () => {

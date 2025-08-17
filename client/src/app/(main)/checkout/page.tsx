@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@/app/Providers/CardProviders";
+import { useCart } from "@/app/_Providers/CardProviders";
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -37,7 +37,7 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          cartItems: cartItems.map(item => ({
+          cartItems: cartItems.map((item:any) => ({
             name: item.name,
             price: item.price,
             quantity: item.quantity,
@@ -73,7 +73,7 @@ export default function CheckoutPage() {
       ) : (
         <>
           <ul className="mb-4">
-            {cartItems.map(item => (
+            {cartItems.map((item:any) => (
               <li key={item.id} className="flex justify-between border-b py-2">
                 <span>{item.name} x {item.quantity}</span>
                 <span>${(item.price * item.quantity).toFixed(2)}</span>

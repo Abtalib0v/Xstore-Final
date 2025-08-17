@@ -2,8 +2,8 @@ const ProductSchema = require("../Models/Product/ProductSchema");
 // const ProductSizesSchema = require("../models/Product/ProductSizesSchema");
 const ProductCategorySchema = require("../Models/Product/ProductCategorySchema");
 const ProductColorSchema = require("../Models/Product/ProductColorSchema");
-// const UserSchema = require("../models/User/UserSchema");
-// const OrderSchema = require("../models/Order/OrderSchema");
+const OrderSchema = require("../Models/Order/OrderSchema");
+const UserSchema = require("../Models/User/UserSchema");
 
 const getAllProducts = async (req, res) => {
   try {
@@ -273,27 +273,39 @@ const createOrder = async (req, res) => {
 };
 
 const getAllOrders = async (req, res) => {
-  const userId = req.query.user;
-  if (!userId) {
-    return res.status(400).json({ message: "User ID is required" });
-  }
   try {
-    const orders = await OrderSchema.find({ user: userId })
-      .populate("user")
-      .populate("products.product");
-    if (!orders || orders.length === 0) {
-      return res.status(404).json({ message: "No orders found for this user" });
-    }
-    return res.status(200).json({
-      data: orders,
-      message: "User's orders fetched successfully",
-    });
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Server error", error: err.message });
+    const userId = req.user._id; // middleware sayesinde var
+    const orders = await OrderSchema.find({ user: userId }).populate("products.product");
+    res.json({ data: orders });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
+
+
+const createOrderAfterPayment = async (req, res) => {
+  try {
+    const { userId, products, totalAmount, address } = req.body;
+
+    if (!userId) return res.status(400).json({ message: "User ID required" });
+
+    const newOrder = new OrderSchema({
+      user: userId,
+      products: products,
+      totalAmount,
+      status: "paid",
+      address,
+    });
+
+    await newOrder.save();
+    return res.status(201).json({ message: "Order created", data: newOrder });
+  } catch (err) {
+    return res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+module.exports = {createOrderAfterPayment };
+
 
 const getAllOrdersInDashboard = async (req, res) => {
   try {
@@ -346,6 +358,7 @@ module.exports = {
   getAllCategories,
   createProductColor,
   createProductCategory,
+  createOrderAfterPayment,
   createProduct,
   getAllOrders,
   getAllOrdersInDashboard,

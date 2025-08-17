@@ -1,7 +1,7 @@
 "use client";
 
-import DrawerSection from "@/app/common/Drawer";
-import { useCart } from "@/app/Providers/CardProviders";
+import DrawerSection from "@/app/_common/Drawer";
+import { useCart } from "@/app/_Providers/CardProviders";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 

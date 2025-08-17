@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import { QueryProviders } from "../Providers/QueryProviders";
+import { QueryProviders } from "../_Providers/QueryProviders";
 // import { CardProvider } from "../Providers/CardProviders";
-import MainLayout from "../features/Layout/MainLayout";
-import { CardProvider } from "../Providers/CardProviders";
+import MainLayout from "../_features/Layout/MainLayout";
+import { CardProvider } from "../_Providers/CardProviders";
 import {Roboto} from "next/font/google";
 import { DM_Sans } from "next/font/google";
 

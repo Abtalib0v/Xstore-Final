@@ -1,4 +1,4 @@
-import ProductCategoryList from "@/app/features/Admin/Products/Caregories";
+import ProductCategoryList from "@/app/_features/Admin/Products/Caregories";
 
 export default function ProductCategoryPage() {
     return (

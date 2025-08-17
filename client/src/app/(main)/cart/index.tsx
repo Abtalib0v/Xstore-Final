@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBag, Star } from "lucide-react";
 import Link from "next/link";
 import AddToCartButton from "@/components/ui/addToCartButton";
-import { useCart } from "@/app/Providers/CardProviders";
+import { useCart } from "@/app/_Providers/CardProviders";
 import { loadStripe } from "@stripe/stripe-js";
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -116,9 +116,9 @@ const handleCheckout = async () => {
           imageUrl={imageUrl}
         />
             </div>
-            <Button onClick={handleCheckout} variant="default">
+            {/* <Button onClick={handleCheckout} variant="default">
             Buy Now
-          </Button>
+          </Button> */}
           </div>
         </div>
       </div>
