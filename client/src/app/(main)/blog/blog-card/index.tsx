@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 type Props = {
@@ -20,8 +21,10 @@ type Props = {
                 <div>
                   <div className="px-[15px] flex flex-col z-20  bg-white">
                     <div className="flex flex-col rounded-[20px]  object-cover overflow-hidden">
-                      <img
+                      <Image
                         className="hover:scale-105   h-[313px]  duration-300   flex object-cover"
+                        width={500}
+                        height={500}
                         src={imageUrl}
                         alt=""
                       />

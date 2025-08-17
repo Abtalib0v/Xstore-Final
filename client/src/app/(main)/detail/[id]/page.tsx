@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import { Star } from "lucide-react";
+import Image from "next/image";
 
 const DetailSection = () => {
   const params = useParams();
@@ -53,6 +54,12 @@ const DetailSection = () => {
 
   return (
     <div className="container-fluid 2xl:px-[150px] px-[50px] pt-[15px] w-full ">
+      {productLoading || catLoading || productsLoading ?  (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    ) : (
+      <>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -76,8 +83,10 @@ const DetailSection = () => {
           <div className=" grid grid-cols-12 h-auto">
             <div className="grid items-start 2xl:col-span-6 col-span-12">
               <div className="flex !items-start border-[1px] h-auto mt-[38.4px] col-span-12 border-[#ddd] rounded-[16px] overflow-hidden">
-                <img
+                <Image
                   className="rounded-[8px] w-full h-auto object-cover"
+                  width={500}
+                  height={500}
                   src={product?.imageUrl}
                   alt=""
                 />
@@ -179,8 +188,10 @@ const DetailSection = () => {
                       className="flex items-center p-2 cursor-pointer"
                     >
                       <Link href={`/detail/${item._id}`}>
-                        <img
+                        <Image
                           src={item.imageUrl}
+                          width={1000}
+                          height={1000}
                           alt={item.name}
                           className="w-[70px] h-[70px] object-cover mr-[20px]"
                         />
@@ -202,6 +213,8 @@ const DetailSection = () => {
           </div>
         </div>
       </div>
+      </>
+    )}
     </div>
   );
 };

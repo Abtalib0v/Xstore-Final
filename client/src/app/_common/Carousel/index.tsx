@@ -28,6 +28,15 @@ export const CarouselSize = () => {
       }}
       className="w-full py-4 flex justify-center"
     >
+      <div>
+
+      
+      {isLoading ? (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    ) : (
+      <>
       <div className="group w-full">
         <CarouselContent className="mx-0 flex  w-full">
           {data &&
@@ -57,6 +66,9 @@ export const CarouselSize = () => {
         <CarouselPrevious className="hidden group-hover:left-[-50] border border-gray-300 text-gray-300 min-w-[40px] duration-500 min-h-[40px] hover:border-[#000000]  md:flex lg:flex left-[10]"  />
         <CarouselNext className="hidden group-hover:right-[-50] border border-gray-300 text-gray-300 min-w-[40px] duration-500 min-h-[40px] hover:border-[#000000]  md:flex lg:flex right-[10]" />
       </div>
+      </>
+    )}
+    </div>
     </Carousel>
   );
 };

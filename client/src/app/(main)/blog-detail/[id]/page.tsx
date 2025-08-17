@@ -19,6 +19,7 @@ import AddToCartButton from "@/components/ui/addToCartButton";
 import { QueryKeys } from "@/app/_constant/QueryKeys";
 import Card from "../../cart";
 import { useCart } from "@/app/_Providers/CardProviders";
+import Image from "next/image";
 type Params = {
   params: {
     id: string;
@@ -29,11 +30,19 @@ const BlogDetailSection = () => {
   const params = useParams();
     const [isGrid, setIsGrid] = useState(true);
   
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["blog", params.id],
     queryFn: () => getAPi(`/blogs/${params.id}`),
   });  
+//   if (isLoading) {
+//   return (
+//     <div className="flex justify-center items-center h-screen">
+//       Loading...
+//     </div>
+//   );
+// }
   const { truncateText } = useCart();
+
 
   // const { id } = useParams();
   //   const { data} = useQuery({
@@ -62,6 +71,13 @@ const { data: blogData } = useQuery({
 
   return (
     <div className="container-fluid px-[150px] w-full ">
+       {isLoading ? (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    ) : (
+      <>
+      
       <div className="pt-[15px] pb-[50px]">
         <Breadcrumb>
           <BreadcrumbList>
@@ -90,10 +106,12 @@ const { data: blogData } = useQuery({
         <div className="grid col-span-9">
           <div className="flex flex-col 2xl:col-span-12 col-span-12 mb-[22px]">
             <div className=" border-[1px] border-[#ddd] rounded-[16px] overflow-hidden">
-              <img
+              <Image
                 className="rounded-[8px] w-full"
-                src={data?.imageUrl}
-                alt=""
+                width={1000}
+                height={500}
+        src={data?.imageUrl }
+                alt={data?.name || "Blog Image"}
               />
             </div>
           </div>
@@ -146,8 +164,10 @@ const { data: blogData } = useQuery({
               {products.slice(0, 5).map((item:any) => (
     <div key={item._id} className="flex items-center p-2">
       <Link href={`/detail/${item._id}`}>
-      <img
-        src={item.imageUrl}
+      <Image
+        width={500}
+        height={500}
+        src={item.imageUrl }
         alt={item.name}
         className="w-[70px] h-[70px] object-cover mr-[20px] "
       />
@@ -172,7 +192,11 @@ const { data: blogData } = useQuery({
           
         </div>
       </div>
+      </>
+    )}
+      
     </div>
+    
   );
 };
 

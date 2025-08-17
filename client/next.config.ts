@@ -5,13 +5,24 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "xstore.8theme.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
         port: "",
         pathname: "/**",
       },
     ],
   },
-  // ...diğer config seçenekleriniz...
 };
 
 export default nextConfig;

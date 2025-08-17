@@ -4,6 +4,7 @@ import Link from "next/link";
 import AddToCartButton from "@/components/ui/addToCartButton";
 import { useCart } from "@/app/_Providers/CardProviders";
 import { loadStripe } from "@stripe/stripe-js";
+import Image from "next/image";
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
@@ -88,8 +89,10 @@ const handleCheckout = async () => {
                 : 'w-full aspect-square'
             } h-full`}
           >
-            <img
+            <Image
               src={imageUrl}
+              width={500}
+              height={500}
               alt=""
               className="flex object-cover h-full rounded-xl"
             />
