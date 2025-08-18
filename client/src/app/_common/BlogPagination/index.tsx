@@ -17,7 +17,6 @@ const ITEMS_PER_PAGE = 7;
 
 export default function BlogPagination() {
   const [currentPage, setCurrentPage] = useState(1);
-
   const { data, isLoading, isError } = useQuery({
     queryKey: QueryKeys.blogs.All,
     queryFn: async () => await getAPi("/blogs"),

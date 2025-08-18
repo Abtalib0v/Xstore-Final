@@ -1,10 +1,9 @@
 import BlogPage from '@/app/_features/pages/BlogPage/page'
 import React from 'react'
 
-const BlogCart = () => {
+export default function BlogCart() {
   return (
     <div><BlogPage/></div>
   )
 }
 
-export default BlogCart

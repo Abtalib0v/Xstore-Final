@@ -3,15 +3,14 @@ import React from 'react'
 import { HeadSec } from '../../sections/BlogSection/HeadSec'
 import BreadCrumbShop from '../../sections/BlogSection/BreadCrumbShop'
 
-const BlogPage = () => {
+export default function BlogPage() {
   return (
-    <div className='container-fluid  2xl:px-[150px] px-0 w-full flex flex-col justify-center  '>
+    <div className='container-fluid  2xl:px-[150px] mb-[85px] px-0 w-full flex flex-col justify-center  '>
       <BreadCrumbShop/>
       <HeadSec/>
-      <BlogPagination/>
+      <BlogPagination  />
 
     </div>
   )
 }
 
-export default BlogPage

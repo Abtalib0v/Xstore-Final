@@ -3,23 +3,49 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext<any>(null);
 export const CardProvider = ({children}: {children: React.ReactNode}) => {
+    // Derive a stable storage key for the logged-in user
+    const getUserCartKey = () => {
+      if (typeof window === "undefined") return null;
+      try {
+        const raw = localStorage.getItem("user");
+        if (!raw) return null;
+        const u = JSON.parse(raw);
+        const uid = u?._id || u?.id || u?.email || null;
+        return uid ? `cart:${uid}` : null;
+      } catch {
+        return null;
+      }
+    };
+
     const [cart, setCart] = useState<any[]>(() => {
-  if (typeof window !== "undefined") {
-    const savedCart = localStorage.getItem("cart");
-    return savedCart ? JSON.parse(savedCart) : [];
-  }
-  return [];
-});
+      if (typeof window !== "undefined") {
+        const key = getUserCartKey();
+        if (!key) return [];
+        const savedCart = localStorage.getItem(key);
+        return savedCart ? JSON.parse(savedCart) : [];
+      }
+      return [];
+    });
 
 
 useEffect(() => {
-
     if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(cart));
+        const key = getUserCartKey();
+        // Only persist when a user is present; avoid writing on logout (null key)
+        if (key) {
+          localStorage.setItem(key, JSON.stringify(cart));
+        }
     }
 }, [cart]);
 
 const addToCart = (item:any) => {
+  // Block adding to cart if user is not logged in
+  if (typeof window === "undefined") return;
+  const hasUser = !!localStorage.getItem("user");
+  if (!hasUser) {
+    console.warn("Please login/register to add items to the cart.");
+    return;
+  }
   setCart((prevCart) => {
     const existingItem = prevCart.find(cartItem => cartItem.id === item._id);
 

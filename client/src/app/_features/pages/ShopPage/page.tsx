@@ -18,7 +18,7 @@ import { HeadSec } from "../../sections/ShopSection/HeadSec";
 import Banner from "../../sections/ShopSection/BannerSection";
 
 
-const ShopPage = () => {
+export default function ShopPage() {
   // *** Gerçek filtreler: API çağrısı için kullanılır ***
   const [filterCategory, setFilterCategory] = useState<string[]>([]);
   const [filterColor, setFilterColor] = useState<string[]>([]);
@@ -152,7 +152,7 @@ const ShopPage = () => {
   };
 
   return (
-    <div className="container-fluid px-[80px] w-full">
+    <div className="container-fluid px-[80px] mb-[85px] w-full">
       <div >
         <BreadCrumbShop/>
       </div>
@@ -465,4 +465,3 @@ const ShopPage = () => {
   );
 };
 
-export default ShopPage;

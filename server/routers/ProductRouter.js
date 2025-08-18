@@ -1,5 +1,7 @@
 const express = require("express");
 const ConnectDb = require("../db/ConnectDb");
+const { addToCart, getCart } = require("../controllers/UserController");
+
 ConnectDb();
 const {
   getAllProducts,
@@ -38,6 +40,9 @@ router.get("/products/colors/:id",getColorById);
 router.post("/products/create/color", createProductColor);
 router.delete("/products/colors/:id", deleteAPiWithParams);
 router.delete("/products/:id", deleteAPiWithParams);
+router.post("/cart", authProtectMiddleware, addToCart);
+router.get("/cart", authProtectMiddleware, getCart);
+
 
 router.post("/products/create/category", createProductCategory);
 router.get("/products/categories", getAllCategories);

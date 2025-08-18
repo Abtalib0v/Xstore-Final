@@ -15,6 +15,19 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  cart: [
+    {
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product", // product modeline referans
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", UserSchema);

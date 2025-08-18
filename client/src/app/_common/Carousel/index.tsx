@@ -14,12 +14,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useCart } from "@/app/_Providers/CardProviders";
 import Card from "@/app/(main)/cart";
 
-export const CarouselSize = () => {
-  const { data, isLoading, isError, error } = useQuery({
+export default function CarouselSize() {
+  const { data, isLoading } = useQuery({
     queryKey: QueryKeys.products.All,
     queryFn: async () => await getAPi("/products"),
   });
-  const {addToCart} = useCart()
+
+  const { addToCart } = useCart();
+
   return (
     <Carousel
       opts={{
@@ -28,25 +30,25 @@ export const CarouselSize = () => {
       }}
       className="w-full py-4 flex justify-center"
     >
-      <div>
-
-      
-      {isLoading ? (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
-      </div>
-    ) : (
-      <>
-      <div className="group w-full">
-        <CarouselContent className="mx-0 flex  w-full">
-          {data &&
-            data?.data?.map((item: any, idx: number) => (
-              <CarouselItem
-                key={idx}
-                className="basis-[100%] py-[100px]  items-center text-center md:basis-[48%] mr-[30px] pl-0 w-full 2xl:basis-[23.6%]"
-              >
-                <div className="hover:scale-105 rounded-[20px] hover:shadow-[0px_0px_11px_1px_rgba(0,_0,_0,_0.1)] duration-300">
-                     <Card
+      <div className="w-full">
+        {isLoading ? (
+          <div className="flex justify-center items-center h-screen">
+            Loading...
+          </div>
+        ) : (
+          <div className="group w-full">
+            <CarouselContent className="mx-0 flex w-full gap-[20px]">
+              {data?.data?.map((item: any, idx: number) => (
+                <CarouselItem
+                  key={item._id}
+                  className="
+                    basis-[100%] sm:basis-[48%] lg:basis-[32%] 2xl:basis-[23.6%] 
+                    py-[60px] sm:py-[80px] lg:py-[100px] 
+                    items-center text-center
+                  "
+                >
+                  <div className="hover:scale-105 rounded-[20px] hover:shadow-[0px_0px_11px_1px_rgba(0,0,0,0.1)] duration-300">
+                    <Card
                      addToCart={() => addToCart(item)}
                      id={item._id}
                 item={item._id} 
@@ -59,16 +61,31 @@ export const CarouselSize = () => {
                 viewMode="grid"
                 
                 />
-                </div>
-              </CarouselItem>
-            ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden group-hover:left-[-50] border border-gray-300 text-gray-300 min-w-[40px] duration-500 min-h-[40px] hover:border-[#000000]  md:flex lg:flex left-[10]"  />
-        <CarouselNext className="hidden group-hover:right-[-50] border border-gray-300 text-gray-300 min-w-[40px] duration-500 min-h-[40px] hover:border-[#000000]  md:flex lg:flex right-[10]" />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+
+            {/* Carousel Kontrolleri */}
+            <CarouselPrevious className="
+              hidden md:flex lg:flex
+              group-hover:left-[-50px]
+              border border-gray-300 text-gray-300 
+              min-w-[40px] min-h-[40px] duration-500
+              hover:border-[#000000] 
+              left-[10px]
+            " />
+            <CarouselNext className="
+              hidden md:flex lg:flex
+              group-hover:right-[-50px]
+              border border-gray-300 text-gray-300 
+              min-w-[40px] min-h-[40px] duration-500
+              hover:border-[#000000] 
+              right-[10px]
+            " />
+          </div>
+        )}
       </div>
-      </>
-    )}
-    </div>
     </Carousel>
   );
-};
+}

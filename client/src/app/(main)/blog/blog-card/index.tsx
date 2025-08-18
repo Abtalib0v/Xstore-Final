@@ -15,7 +15,7 @@ type Props = {
     console.log("id",id);
   return (
     <div>
-        <Link href={`/blog-detail/${id}`}>
+        <Link href={`/blog-detail/${id}`} prefetch>
       <div className="py-4 w-full flex ">
           <div className="mx-0 flex  w-full">
                 <div>

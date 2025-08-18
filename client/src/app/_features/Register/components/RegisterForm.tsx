@@ -32,7 +32,7 @@ const RegisterForm = () => {
                 onSuccess: (data) => {
                     console.log("Registration successful:", data);
                     formik.resetForm()
-                    router.push("/login")
+                    router.push("/")
 
                 }
             })

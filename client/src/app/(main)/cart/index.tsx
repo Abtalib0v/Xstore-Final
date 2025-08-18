@@ -5,6 +5,9 @@ import AddToCartButton from "@/components/ui/addToCartButton";
 import { useCart } from "@/app/_Providers/CardProviders";
 import { loadStripe } from "@stripe/stripe-js";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import { getAPi } from "@/app/_http/api";
+import { QueryKeys } from "@/app/_constant/QueryKeys";
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
@@ -67,12 +70,22 @@ const handleCheckout = async () => {
       console.error("Stripe checkout error:", result.error.message);
     }
   };
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: QueryKeys.products.All,
+    queryFn: async () => await getAPi("/products"),
+  });
   return (
     <div
       className={`border border-[#e1e1e1] rounded-[20px] overflow-hidden ${
         viewMode === 'list' ? 'flex 2xl:flex-row flex-col gap-4 p-[5]  h-[302]' : 'p-[5px] h-full pb-[25px]'
       } `}
     >
+      {isLoading ? (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    ) : (
+      <>
       <div  className="w-full h-full">
         <div
           className={`${
@@ -83,6 +96,7 @@ const handleCheckout = async () => {
         >
           <Link
           href={`/detail/${id}`}
+          prefetch
             className={`${
               viewMode === 'list'
                 ? '2xl:max-w-[400px] 2xl:h-full'
@@ -93,7 +107,7 @@ const handleCheckout = async () => {
               src={imageUrl}
               width={500}
               height={500}
-              alt=""
+              alt={imageUrl || "Blog Image"}
               className="flex object-cover h-full rounded-xl"
             />
           </Link>
@@ -125,6 +139,8 @@ const handleCheckout = async () => {
           </div>
         </div>
       </div>
+      </>
+    )}
 
       {/* Sepete Ekle */}
     </div>
