@@ -61,7 +61,7 @@ export default function CarouselSizeCategory({
                 return (
                   <CarouselItem
                     key={cat._id}
-                    className="basis-[80%] sm:basis-[48%] lg:basis-[30%] 2xl:basis-[23%] flex justify-center"
+                    className="basis-[100%] sm:basis-[48%] lg:basis-[30%] 2xl:basis-[23%] flex justify-center"
                   >
                     <div className="rounded-[20px] overflow-hidden relative group w-full max-w-[380px] h-[240px] sm:h-[280px] md:h-[320px] lg:h-[360px] xl:h-[377px] xl:w-[377px]">
                       <img

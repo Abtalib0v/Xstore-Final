@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap');@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&&display=swap&family=Jost:ital,wght@0,100..900;1,100..900');@import "tailwindcss";
 @import "tw-animate-css";
 body{
   font-family: "Roboto", sans-serif;

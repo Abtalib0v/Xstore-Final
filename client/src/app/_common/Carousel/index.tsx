@@ -42,7 +42,7 @@ export default function CarouselSize() {
                 <CarouselItem
                   key={item._id}
                   className="
-                    basis-[100%] sm:basis-[48%] lg:basis-[32%] 2xl:basis-[23.6%] 
+                    basis-[100%] sm:basis-[48%] lg:basis-[32%] 2xl:basis-[24.6%] 
                     py-[60px] sm:py-[80px] lg:py-[100px] 
                     items-center text-center
                   "
