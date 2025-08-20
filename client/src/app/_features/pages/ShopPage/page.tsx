@@ -12,8 +12,8 @@ import { GoChevronUp } from "react-icons/go";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
 import { TfiViewGrid } from "react-icons/tfi";
 import { IoSearchOutline } from "react-icons/io5";
-import BreadCrumbShop from "@/app/_features/sections/ShopSection/BreadCrumbShop";
 import Card from "@/app/(main)/cart";
+import BreadCrumbShop from "../../sections/ShopSection/BreadCrumbShop";
 import { HeadSec } from "../../sections/ShopSection/HeadSec";
 import Banner from "../../sections/ShopSection/BannerSection";
 

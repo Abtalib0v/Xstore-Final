@@ -193,6 +193,7 @@ const DetailSection = () => {
                           width={1000}
                           height={1000}
                           alt={item.name}
+                          loading="lazy"
                           className="w-[70px] h-[70px] object-cover mr-[20px]"
                         />
                       </Link>

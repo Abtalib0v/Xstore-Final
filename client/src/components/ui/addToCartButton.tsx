@@ -3,6 +3,7 @@
 import DrawerSection from "@/app/_common/Drawer";
 import { useCart } from "@/app/_Providers/CardProviders";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { useState } from "react";
 
 type Props = {
@@ -52,7 +53,10 @@ export default function AddToCartButton({ id, name, price, imageUrl, quantity=1 
             </h1>
             <div className="flex gap-[30px] px-[20px]">
               <div>
-                <img
+                <Image
+                  width={120}
+                  height={120}
+                  loading="lazy"
                   className="w-[120px]"
                   src={selectProduct.imageUrl}
                   alt=""

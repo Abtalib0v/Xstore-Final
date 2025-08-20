@@ -20,9 +20,12 @@ const Header = () => {
   const [openAccountDrawer, setOpenAccountDrawer] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState<{ name: string } | null>(null);
+  // Prevent hydration mismatch: render dynamic, client-only UI after mount
+  const [mounted, setMounted] = useState(false);
 
   const { getCartItems, getTotalPrice, clearCart } = useCart();
-  const total = getTotalPrice().toFixed(2);
+  // Avoid computing totals during SSR to keep markup stable
+  const total = mounted ? getTotalPrice().toFixed(2) : "0.00";
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -35,6 +38,7 @@ const Header = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setMounted(true);
   }, []);
 
   const handleLogout = () => {
@@ -57,14 +61,15 @@ const Header = () => {
           <Link href="/" prefetch className="flex items-center">
             <Image
               width={117}
-              height={0}
+              height={36}
               alt="XStore Logo"
               className="2xl:mr-[270px] md:mr-[100px] sm:mr-0"
               src="https://xstore.8theme.com/elementor/demos/minimal-electronics/wp-content/uploads/sites/71/2022/02/Logo@2x.png"
+              priority
             />
           </Link>
 
-          <div className="hidden 2xl:flex justify-end items-center space-x-4 text-[16px] w-[708px] leading-[25.6px] font-medium">
+          <div className="hidden 2xl:flex justify-end items-center space-x-4 text-[16px] w-[708px] leading-[25.6px] font-medium min-h-[40px]">
             <Link href="/elements" prefetch className={clsx("py-[7px] px-[5px] mx-[8px]",{"text-[#2a74ed]": pathname === "/element","text-black": pathname !== "/element"})}>Elements</Link>
             <Link href="/shop" prefetch className={clsx("py-[7px] px-[5px] mx-[8px]",{"text-[#2a74ed]": pathname === "/shop","text-black": pathname !== "/shop"})}>Shop</Link>
             <Link href="/track-order" prefetch className={clsx("py-[7px] px-[5px] mx-[8px]",{"text-[#2a74ed]": pathname === "/track-order","text-black": pathname !== "/track-order"})}>Track Order</Link>
@@ -79,22 +84,28 @@ const Header = () => {
             </Link>
           </div>
 
-          <div className=" flex text-[23px] items-center gap-[16px]">
+          <div className=" flex text-[23px] items-center gap-[16px] min-h-[40px]">
             <TbRefresh size={19} className="hidden sm:flex" />
             <FaRegHeart size={19} className="hidden sm:flex" />
 
-            {user ? (
-              <Button onClick={handleLogout} className="hidden sm:flex items-center h-[40px] cursor-pointer hover:bg-[#2363c9] gap-2 bg-[#2a74ed] rounded-full">
-                <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-white">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                <span>Logout</span>
-              </Button>
+            {/* Defer user-dependent UI until after mount to avoid hydration mismatch */}
+            {mounted ? (
+              user ? (
+                <Button onClick={handleLogout} className="hidden sm:flex items-center h-[40px] cursor-pointer hover:bg-[#2363c9] gap-2 bg-[#2a74ed] rounded-full">
+                  <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-white">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <span>Logout</span>
+                </Button>
+              ) : (
+                <Button onClick={() => setOpenAccountDrawer(true)} className="flex items-center gap-1.5 bg-transparent text-black shadow-none hover:bg-transparent cursor-pointer rounded-full">
+                  <FaRegUser size={19} />
+                  <h1 className="text-[15px] w-[48px]">Sign In</h1>
+                </Button>
+              )
             ) : (
-              <Button onClick={() => setOpenAccountDrawer(true)} className="flex items-center gap-1.5 bg-transparent text-black shadow-none hover:bg-transparent cursor-pointer rounded-full">
-                <FaRegUser size={19} />
-                <h1 className="text-[15px] w-[48px]">Sign In</h1>
-              </Button>
+              // Neutral placeholder with stable markup during SSR
+              <div className="hidden sm:flex items-center h-[40px] gap-2 rounded-full" aria-hidden />
             )}
 
             {openAccountDrawer && !user && (
@@ -106,17 +117,15 @@ const Header = () => {
               variant="outline"
               className="bg-[#2a74ed] rounded-full hover:bg-[#2363c9] hover:text-white border-transparent h-[40px] text-white cursor-pointer bg-none"
             >
-              {getCartItems().length > 0 ? (
-                <div className="flex items-center gap-1.5 text-[15px]">
-                  <PiBasket />
-                  Cart - ${total}
-                </div>
-              ) : (
-                <div className="flex items-center gap-1.5">
-                  <PiBasket />
-                  Cart $0.00
-                </div>
-              )}
+              {/* Keep classNames consistent; fill text after mount */}
+              <div className="flex items-center gap-1.5 text-[15px]">
+                <PiBasket />
+                {mounted && getCartItems().length > 0 ? (
+                  <span suppressHydrationWarning>Cart - ${total}</span>
+                ) : (
+                  <span suppressHydrationWarning>Cart $0.00</span>
+                )}
+              </div>
             </Button>
 
             {openDrawer && <DrawerSection open={openDrawer} setOpen={setOpenDrawer} />}
@@ -138,19 +147,26 @@ const Header = () => {
           <span>❤️</span>
           Wishlist
         </Link>
-        {user ? (
-              <Button onClick={handleLogout} className="flex bg-[#2a74ed] flex-col items-center text-xs">
-                <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-white">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                <span>Logout</span>
-              </Button>
-            ) : (
-              <Button onClick={() => setOpenAccountDrawer(true)} className="flex bg-[#2a74ed] flex-col items-center text-xs">
-                {/* <FaRegUser size={19} /> */}
-<span>👤</span>
-          Account              </Button>
-            )}
+        {mounted ? (
+          user ? (
+            <Button onClick={handleLogout} className="flex bg-[#2a74ed] flex-col items-center text-xs">
+              <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-white">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
+              <span>Logout</span>
+            </Button>
+          ) : (
+            <Button onClick={() => setOpenAccountDrawer(true)} className="flex bg-[#2a74ed] flex-col items-center text-xs">
+              <span>👤</span>
+              Account
+            </Button>
+          )
+        ) : (
+          <div className="flex bg-[#2a74ed] flex-col items-center text-xs" aria-hidden>
+            <span>👤</span>
+            Account
+          </div>
+        )}
         {/* <Button onClick={() => setOpenAccountDrawer(true)} className="flex bg-none flex-col items-center text-xs">
           <span>👤</span>
           Account

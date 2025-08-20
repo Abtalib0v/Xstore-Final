@@ -3,6 +3,7 @@ import Banner from '../../../_common/BannerSection'
 import CarouselSize from '@/app/_common/Carousel'
 import CarouselSizeCategory from '@/app/_common/CarouselCategory'
 import CarouselProfile from '@/app/_common/CarouselProfile'
+import CarouselBlog from '@/app/_common/CarouselBlog'
 // import { stripe } from '@/lib/stripe'
 
 export default async function  HomePage() {
@@ -17,6 +18,7 @@ export default async function  HomePage() {
     <CarouselSizeCategory />
     <CarouselSize  />
     <CarouselProfile/>
+    <CarouselBlog/>
     </div>
   )
 }

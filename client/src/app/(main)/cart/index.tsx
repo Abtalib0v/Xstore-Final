@@ -108,6 +108,7 @@ const handleCheckout = async () => {
               width={500}
               height={500}
               alt={imageUrl || "Blog Image"}
+              loading="lazy"
               className="flex object-cover h-full rounded-xl"
             />
           </Link>

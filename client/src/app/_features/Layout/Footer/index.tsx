@@ -39,8 +39,8 @@ const Footer = () => {
             },
           ].map((item, i) => (
             <div key={i} className="flex items-center text-left">
-              <div className="mr-4 w-12 flex-shrink-0">
-                <img src={item.img} alt="" />
+              <div className="mr-4 w-12 h-12 flex-shrink-0">
+                <img src={item.img} alt="" width={48} height={48} className="w-12 h-12 object-contain" loading="lazy" />
               </div>
               <div>
                 <h1 className="text-[16px] font-medium mb-1">{item.title}</h1>
@@ -143,7 +143,11 @@ const Footer = () => {
             <div className="2xl:w-[160px]">
               <img
                 src="https://xstore.8theme.com/elementor/demos/minimal-electronics/wp-content/uploads/sites/71/2024/03/footer-logo.png"
-                alt=""
+                alt="Footer Logo"
+                width={160}
+                height={40}
+                className="w-[160px] h-10 object-contain"
+                loading="lazy"
               />
             </div>
             <div>
@@ -185,6 +189,10 @@ const Footer = () => {
             <img
               src="https://xstore.8theme.com/elementor/demos/minimal-electronics/wp-content/uploads/sites/71/2024/03/Payment.png"
               alt="Payment Methods"
+              width={400}
+              height={40}
+              className="w-auto h-10 object-contain"
+              loading="lazy"
             />
           </div>
         </div>

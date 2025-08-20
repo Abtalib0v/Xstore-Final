@@ -39,7 +39,7 @@ export default function CarouselProfile() {
 
   return (
     <div
-      className="grid grid-cols-12 gap-4 px-[176px] relative mb-[95px]"
+      className="2xl:grid 2xl:grid-cols-12 flex flex-col gap-4 2xl:px-[176px] px-[50px] 2xl:relative 2xl:mb-[95px] mb-[195px]"
       style={{
         backgroundImage:
           'url("https://xstore.8theme.com/elementor/demos/minimal-electronics/wp-content/uploads/sites/71/2022/02/07_Review-min.jpeg")',
@@ -50,8 +50,8 @@ export default function CarouselProfile() {
         borderRadius: "16px",
       }}
     >
-      <div className="col-span-6">
-        <div className="w-[544px] absolute top-1/2  transform -translate-y-1/2">
+      <div className="2xl:col-span-6 flex">
+        <div className="2xl:w-[544px] w-full 2xl:absolute 2xl:top-1/2  transform 2xl:-translate-y-1/2">
             <h1 className="uppercase text-[12px] text-[#444444] tracking-[2px] mb-[20px]" >Client’s Testimonials</h1>
         <h2 className="text-[40px] text-[#222222] font-medium leading-[52px] tracking-normal mb-[15px]">5K+ Satisfied Customers Let’s Look Reviews</h2>
         <div className="w-[80px] h-[4px] bg-[#2a74ed] border-b rounded-full border-[#2a74ed] mb-[20px]"></div>
@@ -70,14 +70,14 @@ export default function CarouselProfile() {
         </div>
         
       </div>
-      <div className="col-span-6">
-        <Tilt className="!w-[530px] absolute top-1/2 left-[55%] transform -translate-y-1/2 rounded-2xl">
+      <div className="2xl:col-span-6 flex">
+        <Tilt className="2xl:w-[530px] w-full 2xl:absolute 2xl:mb-0 mb-[100px] 2xl:top-1/2 left-[55%] transform 2xl:-translate-y-1/2 rounded-2xl">
           <Carousel
             opts={{
               align: "center",
               loop: true,
             }}
-            className="w-[530px] mx-auto   flex rounded-2xl"
+            className="2xl:w-[530px] w-full mx-auto   flex rounded-2xl"
           >
             <CarouselContent>
               {profiles.map((profile) => (

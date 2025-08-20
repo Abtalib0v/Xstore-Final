@@ -6,7 +6,7 @@ type Props = {
       idx: number,
       name: string,
       description: string,
-      createdAtFormatted: string,
+      createdAtFormatted: string | null,
       categories: string,
       imageUrl: string,
       id:any

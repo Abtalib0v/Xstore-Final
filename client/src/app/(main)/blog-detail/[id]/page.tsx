@@ -169,6 +169,7 @@ const { data: blogData } = useQuery({
         height={500}
         src={item.imageUrl }
         alt={item.name}
+        loading="lazy"
         className="w-[70px] h-[70px] object-cover mr-[20px] "
       />
       </Link>
