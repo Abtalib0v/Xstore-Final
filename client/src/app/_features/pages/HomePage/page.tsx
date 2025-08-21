@@ -1,9 +1,11 @@
 import React from 'react'
-import Banner from '../../../_common/BannerSection'
-import CarouselSize from '@/app/_common/Carousel'
-import CarouselSizeCategory from '@/app/_common/CarouselCategory'
-import CarouselProfile from '@/app/_common/CarouselProfile'
-import CarouselBlog from '@/app/_common/CarouselBlog'
+import Banner from '../../sections/HomeSection/BannerSection'
+import CarouselSize from '@/app/_features/sections/HomeSection/Carousel'
+import CarouselSizeCategory from '@/app/_features/sections/HomeSection/CarouselCategory'
+import CarouselProfile from '@/app/_features/sections/HomeSection/CarouselProfile'
+import CarouselBlog from '@/app/_features/sections/HomeSection/CarouselBlog'
+import SponsoredSec from '../../sections/HomeSection/SponsoreSec'
+import NewProduct from '../../sections/HomeSection/NewProduct'
 // import { stripe } from '@/lib/stripe'
 
 export default async function  HomePage() {
@@ -17,8 +19,10 @@ export default async function  HomePage() {
     <Banner/>
     <CarouselSizeCategory />
     <CarouselSize  />
+    <NewProduct/>
     <CarouselProfile/>
     <CarouselBlog/>
+    <SponsoredSec/>
     </div>
   )
 }

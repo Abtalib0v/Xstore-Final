@@ -152,14 +152,14 @@ export default function ShopPage() {
   };
 
   return (
-    <div className="container-fluid px-[80px] mb-[85px] w-full">
+    <div className="container-fluid 2xl:px-[80px] px-[13px] mb-[85px] w-full">
       <div >
         <BreadCrumbShop/>
       </div>
       <div>
         <HeadSec/>
       </div>
-      <div className="flex flex-col mx-[60px]">
+      <div className="flex flex-col 2xl:mx-[60px]">
         <div className="grid 2xl:grid-cols-12 grid-cols-1 gap-5 mb-[25px]">
           <div className="grid col-span-10">
             <div className="grid 2xl:grid-cols-12 grid-cols-1 gap-[30px] !font-dm">

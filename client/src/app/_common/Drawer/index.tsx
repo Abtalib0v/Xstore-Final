@@ -36,7 +36,7 @@ export default function DrawerSection({
           className="py-[20px] px-[30px] flex flex-col h-full overflow-hidden"
         >
           <h1 className="text-[18px] font-bold mb-[10px]">Cart Items</h1>
-          <div className="flex-1 ">
+          <div className="flex-1 overflow-y-auto">
             {cartItems.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full">
                 <p className="text-gray-500 mb-[20.02px]">

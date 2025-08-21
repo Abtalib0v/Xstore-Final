@@ -13,7 +13,7 @@ import { FaXTwitter } from "react-icons/fa6";
 const Footer = () => {
   return (
     <div className="bg-[#32373C] text-white  w-full">
-      <div className="container-fluid mx-[70px] px-4 md:px-12 lg:px-20 flex flex-col justify-between ">
+      <div className="container-fluid 2xl:mx-[70px] mx-[15px] px-4 md:px-12 lg:px-20 flex flex-col justify-between ">
         {/* Üst kısım - icon + text */}
         <div className="mt-6 border-b border-[#464d54] pb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
           {[
@@ -139,7 +139,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="my-[35px] items-center justify-between 2xl:flex">
-          <div className="mx-[20px]  2xl:flex justify-between items-center">
+          <div className="2xl:mx-[20px]  2xl:flex justify-between items-center">
             <div className="2xl:w-[160px]">
               <img
                 src="https://xstore.8theme.com/elementor/demos/minimal-electronics/wp-content/uploads/sites/71/2024/03/footer-logo.png"

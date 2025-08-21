@@ -38,8 +38,9 @@ export default function CarouselProfile() {
   ];
 
   return (
-    <div
-      className="2xl:grid 2xl:grid-cols-12 flex flex-col gap-4 2xl:px-[176px] px-[50px] 2xl:relative 2xl:mb-[95px] mb-[195px]"
+    <div className="px-[13px]">
+      <div
+      className="2xl:grid 2xl:grid-cols-12 flex flex-col gap-4 2xl:px-[176px] px-[13px] 2xl:relative 2xl:mb-[95px] mb-[195px] "
       style={{
         backgroundImage:
           'url("https://xstore.8theme.com/elementor/demos/minimal-electronics/wp-content/uploads/sites/71/2022/02/07_Review-min.jpeg")',
@@ -50,7 +51,7 @@ export default function CarouselProfile() {
         borderRadius: "16px",
       }}
     >
-      <div className="2xl:col-span-6 flex">
+      <div className="2xl:col-span-6 flex ">
         <div className="2xl:w-[544px] w-full 2xl:absolute 2xl:top-1/2  transform 2xl:-translate-y-1/2">
             <h1 className="uppercase text-[12px] text-[#444444] tracking-[2px] mb-[20px]" >Client’s Testimonials</h1>
         <h2 className="text-[40px] text-[#222222] font-medium leading-[52px] tracking-normal mb-[15px]">5K+ Satisfied Customers Let’s Look Reviews</h2>
@@ -141,5 +142,7 @@ export default function CarouselProfile() {
         </Tilt>
       </div>
     </div>
+    </div>
+    
   );
 }

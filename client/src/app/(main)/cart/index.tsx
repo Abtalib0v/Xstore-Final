@@ -8,6 +8,10 @@ import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { getAPi } from "@/app/_http/api";
 import { QueryKeys } from "@/app/_constant/QueryKeys";
+import QuickShopButton from "@/components/ui/quickShopButton";
+import WishlistButton from "@/components/ui/wishlistButton";
+import { useState } from "react";
+import WishlistDrawer from "@/app/_common/WishlistDrawer";
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
@@ -35,6 +39,7 @@ const Card = ({
   viewMode: 'grid' | 'list';
 }) => {
   const { truncateText } = useCart();
+  const [openWishlistDrawer, setOpenWishlistDrawer] = useState(false);
 const handleCheckout = async () => {
     const stripe = await stripePromise;
     if (!stripe) {
@@ -86,7 +91,7 @@ const handleCheckout = async () => {
       </div>
     ) : (
       <>
-      <div  className="w-full h-full">
+      <div  className="w-full h-full relative group">
         <div
           className={`${
             viewMode === 'list'
@@ -112,7 +117,11 @@ const handleCheckout = async () => {
               className="flex object-cover h-full rounded-xl"
             />
           </Link>
-
+<div className="absolute opacity-0 w-full top-[59%] group-hover:opacity-100 duration-400 group-hover:top-[57%] right-1/2 translate-x-1/2">
+  <div>
+              <QuickShopButton id={id} name={name} price={price} imageUrl={imageUrl} buttonText="Quick Shop" />
+            </div>
+</div>
           <div
             className={`${
               viewMode === 'list' ? 'flex flex-col' : 'flex flex-col items-center  mt-4'
@@ -134,6 +143,19 @@ const handleCheckout = async () => {
           imageUrl={imageUrl}
         />
             </div>
+            {/* Demo: wishlist (opens drawer on add) & quick shop under Add to Cart */}
+            <div className="flex items-center gap-2 mt-2 absolute top-0 right-0 opacity-0 duration-300 group-hover:opacity-100">
+              <WishlistButton
+                id={id}
+                name={name}
+                price={price}
+                imageUrl={imageUrl}
+                onToggled={(active) => { if (active) setOpenWishlistDrawer(true); }}
+              /></div>
+              
+            {openWishlistDrawer && (
+              <WishlistDrawer open={openWishlistDrawer} setOpen={setOpenWishlistDrawer} />
+            )}
             {/* <Button onClick={handleCheckout} variant="default">
             Buy Now
           </Button> */}

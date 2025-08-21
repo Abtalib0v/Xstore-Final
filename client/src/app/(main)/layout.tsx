@@ -3,6 +3,7 @@ import { DM_Sans, Roboto } from "next/font/google";
 import "../globals.css";
 import { QueryProviders } from "../_Providers/QueryProviders";
 import { CardProvider } from "../_Providers/CardProviders";
+import { WishlistProvider } from "../_Providers/WishlistProvider";
 import MainLayout from "../_features/Layout/MainLayout";
 
 // Sadece kullanılan fontları import et
@@ -31,7 +32,9 @@ export default function RootLayout({
       <body className={`${dmSans.variable} antialiased`}>
         <QueryProviders>
           <CardProvider>
-            <MainLayout>{children}</MainLayout>
+            <WishlistProvider>
+              <MainLayout>{children}</MainLayout>
+            </WishlistProvider>
           </CardProvider>
         </QueryProviders>
       </body>

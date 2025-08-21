@@ -16,6 +16,8 @@ import {
 import Link from "next/link";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import WishlistButton from "@/components/ui/wishlistButton";
+import QuickShopButton from "@/components/ui/quickShopButton";
 
 const DetailSection = () => {
   const params = useParams();
@@ -53,7 +55,7 @@ const DetailSection = () => {
   }
 
   return (
-    <div className="container-fluid 2xl:px-[150px] px-[50px] pt-[15px] w-full ">
+    <div className="container-fluid 2xl:px-[150px] px-[13px] pt-[15px] w-full ">
       {productLoading || catLoading || productsLoading ?  (
       <div className="flex justify-center items-center h-screen">
         Loading...
@@ -134,6 +136,23 @@ const DetailSection = () => {
                     price={product?.price}
                     imageUrl={product?.imageUrl}
                     quantity={quantity} // yeni eklenen props
+                  />
+                </div>
+                {/* Demo: Wishlist & Quick Shop buttons under Add to Cart */}
+                <div className="flex items-center gap-3 mt-3">
+                  <WishlistButton
+                    id={product?._id}
+                    name={product?.name}
+                    price={product?.price}
+                    imageUrl={product?.imageUrl}
+                  />
+                  <QuickShopButton
+                    id={product?._id}
+                    name={product?.name}
+                    price={product?.price}
+                    imageUrl={product?.imageUrl}
+                    quantity={quantity}
+                    buttonText="Quick Shop"
                   />
                 </div>
               </div>

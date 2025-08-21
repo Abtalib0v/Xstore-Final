@@ -22,9 +22,9 @@ type Props = {
                   <div className="px-[15px] flex flex-col z-20  bg-white">
                     <div className="flex flex-col rounded-[20px]  object-cover overflow-hidden">
                       <Image
-                        className="hover:scale-105   h-[313px]  duration-300   flex object-cover"
-                        width={500}
-                        height={500}
+                        className="hover:scale-105 hover:opacity-80   h-[313px]  duration-300   flex object-cover"
+                        width={600}
+                        height={600}
                         src={imageUrl}
                         alt=""
                       />

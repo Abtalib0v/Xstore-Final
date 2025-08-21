@@ -40,7 +40,8 @@ export default function CarouselSizeCategory({
   ];
 
   return (
-    <Carousel
+    <div>
+      <Carousel
       opts={{
         align: "start",
         loop: true,
@@ -94,5 +95,7 @@ export default function CarouselSizeCategory({
         )}
       </div>
     </Carousel>
+    </div>
+    
   );
 }

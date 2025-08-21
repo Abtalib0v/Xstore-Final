@@ -4,9 +4,10 @@ import React from "react";
 
 const Banner = () => {
   return (
-    <div  style={{ width: "100%", maxHeight: "580px" }}>
+    <div className="px-[13px]">
+      <div  style={{ width: "100%", maxHeight: "580px" }}>
       <div
-        className="px-[80px] py-[113px]"
+        className="2xl:px-[80px] py-[113px] px-[13px]"
         style={{
           backgroundImage:
             'url("https://xstore.8theme.com/elementor/demos/minimal-electronics/wp-content/uploads/sites/71/2022/02/Image-4-min.jpeg")',
@@ -38,6 +39,8 @@ const Banner = () => {
         </div>
       </div>
     </div>
+    </div>
+    
   );
 };
 

@@ -70,7 +70,7 @@ const { data: blogData } = useQuery({
 
 
   return (
-    <div className="container-fluid px-[150px] w-full ">
+    <div className="container-fluid 2xl:px-[150px] px-[13px] w-full ">
        {isLoading ? (
       <div className="flex justify-center items-center h-screen">
         Loading...
