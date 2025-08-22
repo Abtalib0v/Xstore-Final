@@ -27,8 +27,9 @@ export default function CarouselSize() {
       opts={{
         align: "start",
         loop: true,
+        containScroll: "trimSnaps",
       }}
-      className="w-full py-4 flex justify-center"
+      className="w-full py-4"
     >
       <div className="w-full">
         {isLoading ? (
@@ -36,18 +37,23 @@ export default function CarouselSize() {
             Loading...
           </div>
         ) : (
-          <div className="group w-full">
-            <CarouselContent className="mx-0 flex w-full gap-[20px]">
+          // Use a named group to prevent interfering with inner card-level `group` hovers
+          <div className="group/carousel w-full">
+            {/* Override default Embla gutters to prevent trailing loop gap */}
+            <CarouselContent className="mx-0 w-full !ml-0">
               {data?.data?.map((item: any, idx: number) => (
                 <CarouselItem
                   key={item._id}
                   className="
-                    basis-[100%] sm:basis-[48%] lg:basis-[32%] 2xl:basis-[24.6%] 
+                    basis-[100%] sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4 
+                    !pl-0
                     py-[60px] sm:py-[80px] lg:py-[100px] 
-                    items-center text-center
+                    items-center
+                    text-center
+                    gap-1
                   "
                 >
-                  <div className="hover:scale-105 rounded-[20px] hover:shadow-[0px_0px_11px_1px_rgba(0,0,0,0.1)] duration-300">
+                  <div className=" rounded-[20px] pr-10">
                     <Card
                      addToCart={() => addToCart(item)}
                      id={item._id}
@@ -66,10 +72,10 @@ export default function CarouselSize() {
               ))}
             </CarouselContent>
 
-            {/* Carousel Kontrolleri */}
+            {/* Carousel Controls */}
             <CarouselPrevious className="
               hidden md:flex lg:flex
-              group-hover:left-[-50px]
+              group-hover/carousel:left-[-50px]
               border border-gray-300 text-gray-300 
               min-w-[40px] min-h-[40px] duration-500
               hover:border-[#000000] 
@@ -77,7 +83,7 @@ export default function CarouselSize() {
             " />
             <CarouselNext className="
               hidden md:flex lg:flex
-              group-hover:right-[-50px]
+              group-hover/carousel:right-[-50px]
               border border-gray-300 text-gray-300 
               min-w-[40px] min-h-[40px] duration-500
               hover:border-[#000000] 

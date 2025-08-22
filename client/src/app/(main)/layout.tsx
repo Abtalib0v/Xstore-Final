@@ -29,7 +29,7 @@ export default function RootLayout({
 }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} antialiased`}>
+      <body suppressHydrationWarning className={`${dmSans.variable} antialiased`}>
         <QueryProviders>
           <CardProvider>
             <WishlistProvider>

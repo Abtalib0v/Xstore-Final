@@ -40,13 +40,14 @@ export default function CarouselSizeCategory({
   ];
 
   return (
-    <div>
+    
       <Carousel
       opts={{
         align: "start",
         loop: true,
+          containScroll: "trimSnaps",
       }}
-      className="w-full py-8 flex justify-center"
+      className="w-full py-8"
     >
       <div className="w-full">
         {catLoading ? (
@@ -55,14 +56,14 @@ export default function CarouselSizeCategory({
           </div>
         ) : (
           <div className="w-full">
-            <CarouselContent className="flex w-full gap-6">
+            <CarouselContent className="flex w-full">
               {categories.map((cat: any, idx: number) => {
                 const imgSrc = CategoryImages[idx % CategoryImages.length];
 
                 return (
                   <CarouselItem
                     key={cat._id}
-                    className="basis-[100%] sm:basis-[48%] lg:basis-[30%] 2xl:basis-[23%] flex justify-center"
+                    className="basis-[100%] sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4  flex justify-center"
                   >
                     <div className="rounded-[20px] overflow-hidden relative group w-full max-w-[380px] h-[240px] sm:h-[280px] md:h-[320px] lg:h-[360px] xl:h-[377px] xl:w-[377px]">
                       <img
@@ -95,7 +96,6 @@ export default function CarouselSizeCategory({
         )}
       </div>
     </Carousel>
-    </div>
     
   );
 }

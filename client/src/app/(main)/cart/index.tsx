@@ -81,7 +81,7 @@ const handleCheckout = async () => {
   });
   return (
     <div
-      className={`border border-[#e1e1e1] rounded-[20px] overflow-hidden ${
+      className={`border border-[#e1e1e1] rounded-[20px] overflow-hidden box-border w-full ${
         viewMode === 'list' ? 'flex 2xl:flex-row flex-col gap-4 p-[5]  h-[302]' : 'p-[5px] h-full pb-[25px]'
       } `}
     >
@@ -105,7 +105,7 @@ const handleCheckout = async () => {
             className={`${
               viewMode === 'list'
                 ? '2xl:max-w-[400px] 2xl:h-full'
-                : 'w-full aspect-square'
+                : 'w-full max-w-[345.5px] aspect-square'
             } h-full`}
           >
             <Image

@@ -6,6 +6,7 @@ import CarouselProfile from '@/app/_features/sections/HomeSection/CarouselProfil
 import CarouselBlog from '@/app/_features/sections/HomeSection/CarouselBlog'
 import SponsoredSec from '../../sections/HomeSection/SponsoreSec'
 import NewProduct from '../../sections/HomeSection/NewProduct'
+import HoverProduct from '../../sections/HomeSection/HoverProduct'
 // import { stripe } from '@/lib/stripe'
 
 export default async function  HomePage() {
@@ -18,6 +19,7 @@ export default async function  HomePage() {
     <div className='container-fluid mx-[150px] w-full'>
     <Banner/>
     <CarouselSizeCategory />
+    <HoverProduct/>
     <CarouselSize  />
     <NewProduct/>
     <CarouselProfile/>
