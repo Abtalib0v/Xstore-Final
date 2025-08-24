@@ -101,7 +101,7 @@ const handleCheckout = async () => {
         >
           <Link
           href={`/detail/${id}`}
-          prefetch
+          prefetch={false}
             className={`${
               viewMode === 'list'
                 ? '2xl:max-w-[400px] 2xl:h-full'

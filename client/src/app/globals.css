@@ -3,7 +3,21 @@
 body{
   font-family: "Roboto", sans-serif;
 }
+@layer utilities {
+  @keyframes bob-float {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+  }
 
+  @keyframes bob {
+    0%, 100% { transform: translateY(-8px); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .hover\:bob:hover {
+    animation: bob-float 0.3s ease-out forwards, bob 1.5s ease-in-out infinite alternate;
+  }
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

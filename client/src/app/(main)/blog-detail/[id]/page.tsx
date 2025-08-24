@@ -145,8 +145,9 @@ const { data: blogData } = useQuery({
             <div className=" flex flex-col gap-[20px]">
               <div className="flex flex-col border border-[#E5E5E5]  rounded-[20px] p-[35px]">
             <div className="text-[#222222] font-medium mb-[20px] border-b pb-[20px] text-[17.92px]">Categories</div>
-            <div className=" text-[17.92px] flex flex-col gap-[10px] text-[#888888] list-none">
-              {categories.map((cat: any) => (
+            <div >
+              <ul className=" text-[17.92px] flex flex-col gap-[10px] text-[#888888] list-none">
+                {categories.map((cat: any) => (
                   <li key={cat._id}>
                     <Link
                       href={`/blog/category/${cat._id}`}
@@ -156,6 +157,8 @@ const { data: blogData } = useQuery({
                     </Link>
                   </li>
                 ))}
+              </ul>
+              
             </div>
           </div>
           <div className="flex flex-col border border-[#E5E5E5]  rounded-[20px] p-[35px]">
@@ -163,7 +166,7 @@ const { data: blogData } = useQuery({
             <div className=" text-[17.92px] flex flex-col gap-[10px] text-[#888888] list-none">
               {products.slice(0, 5).map((item:any) => (
     <div key={item._id} className="flex items-center p-2">
-      <Link href={`/detail/${item._id}`}>
+      <Link href={`/detail/${item._id}`} prefetch={false}>
       <Image
         width={500}
         height={500}

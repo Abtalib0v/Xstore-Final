@@ -81,7 +81,7 @@ const Hotspot: React.FC<HotspotProps> = ({ top, left, item, placement = "right" 
           <img
             src={image}
             alt={title}
-            className="w-full h-24 object-cover rounded-md mb-2"
+            className="w-full object-cover rounded-md mb-2"
           />
           <h3 className="text-sm font-medium text-gray-800 line-clamp-2">{title}</h3>
           <div className="flex items-center gap-1 mt-1">
@@ -136,9 +136,8 @@ const HoverProduct: React.FC = () => {
 
   return (
     <section className="w-full bg-white py-16">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start px-4 md:px-8">
-        {/* Sol taraf - Foto ve Hotspotlar */}
-        <div className="2xl:col-span-7 md:col-span-7 col-span-12 flex justify-center">
+      <div className=" grid grid-cols-12  items-start ">
+        <div className="2xl:col-span-7 col-span-12 flex justify-start">
           <div
             className="relative rounded-2xl overflow-hidden w-full max-w-[785px]"
             style={{ aspectRatio: "785 / 515" }}
@@ -161,9 +160,7 @@ const HoverProduct: React.FC = () => {
             ))}
           </div>
         </div>
-
-        {/* Sağ taraf - Metin */}
-        <div className="2xl:space-y-6 2xl:col-span-5 md:col-span-5 col-span-12 mt-8 md:mt-0">
+        <div className="2xl:space-y-6 2xl:col-span-5 col-span-12 my-auto max-w-[560px]">
           <p className="text-sm uppercase tracking-widest text-gray-500">
             XStore Elementor Minimal Electronics Demo
           </p>
