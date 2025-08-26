@@ -1,44 +1,45 @@
 "use client";
 import { useEffect, useState } from "react";
-import { postApi } from "@/app/_http/api";
 
 const SuccessPage = () => {
-  const [orderCreated, setOrderCreated] = useState(false);
+  const [orderId, setOrderId] = useState("");
+  const [products, setProducts] = useState<any[]>([]);
+  const [status, setStatus] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
-    const createOrder = async () => {
+    const fetchOrder = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get("session_id");
+      if (!sessionId) return;
+
       try {
-        // localStorage'dan kullanıcı ve sepet verilerini al
-        const loggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
-        const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-        const totalPrice = parseFloat(localStorage.getItem("totalPrice") || "0");
-        const userAddress = localStorage.getItem("userAddress") || "";
-
-        if (!loggedInUser._id || cartItems.length === 0) return;
-
-        await postApi("/create/order/after-payment", {
-          userId: loggedInUser._id,
-          products: cartItems.map((item: any) => ({
-            product: item.id,
-            quantity: item.count,
-          })),
-          totalAmount: totalPrice,
-          address: userAddress,
+        const res = await fetch("/api/track-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: sessionId }),
         });
 
-        setOrderCreated(true);
-        console.log("Order created successfully!");
+        const data = await res.json();
+        if (res.ok) {
+          setOrderId(sessionId);
+          setProducts(data.products || []);
+          setStatus(data.status);
+          setEmail(data.email || "");
+        } else {
+          console.error(data.error);
+        }
       } catch (err) {
-        console.error("Error creating order:", err);
+        console.error(err);
       }
     };
 
-    createOrder();
+    fetchOrder();
   }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="w-full max-w-2xl p-12 mx-4 text-center transition-all transform bg-white shadow-lg rounded-xl hover:shadow-xl">
+      <div className="w-full max-w-3xl p-12 mx-4 text-center transition-all transform bg-white shadow-lg rounded-xl hover:shadow-xl">
         <div className="flex items-center justify-center w-24 h-24 mx-auto mb-8 bg-green-100 rounded-full">
           <svg
             className="w-12 h-12 text-green-600"
@@ -51,7 +52,7 @@ const SuccessPage = () => {
               strokeLinejoin="round"
               strokeWidth="2"
               d="M5 13l4 4L19 7"
-            ></path>
+            />
           </svg>
         </div>
 
@@ -59,15 +60,32 @@ const SuccessPage = () => {
           Payment Successful!
         </h1>
 
-        <p className="mb-8 text-xl text-gray-700">
-          {orderCreated
-            ? "Thank you for your purchase. Your order has been created."
-            : "Creating your order..."}
-        </p>
+        {orderId ? (
+          <>
+            <p className="mb-2 text-lg text-gray-700">Order ID: <strong>{orderId}</strong></p>
+            <p className="mb-4 text-lg text-gray-700">Status: {status}</p>
+            <p className="mb-4 text-lg text-gray-700">Email: {email}</p>
+
+            <ul className="mb-8">
+              {products.map((p, idx) => (
+                <li key={idx} className="flex items-center mb-2 text-gray-700">
+                  {p.image && (
+                    <img src={p.image} alt={p.name} className="w-16 h-16 mr-4 object-cover" />
+                  )}
+                  <span>
+                    {p.name} — {p.quantity} adet — ${p.price.toFixed(2)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p className="mb-8 text-xl text-gray-700">Loading your order details...</p>
+        )}
 
         <div className="mt-12">
           <a
-            href="/"
+            href="/track-order"
             className="inline-block px-8 py-4 text-lg font-semibold text-white transition-colors duration-200 bg-green-600 rounded-lg hover:bg-green-700"
           >
             Return to Dashboard
